@@ -4,7 +4,7 @@ function Home() {
     
   return (
     <div>
-        <SignInButton/>
+      <SignInButton/>
     </div>
   )
 }
