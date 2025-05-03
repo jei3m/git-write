@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './Router.tsx'
 import { ClerkProvider } from '@clerk/clerk-react'
-import { ThemeProvider } from './contexts/ThemeProvider.tsx'
+import { dark} from '@clerk/themes'
+import { ThemeProvider, useTheme } from './contexts/ThemeProvider.tsx'
 import { Toaster } from "@/components/ui/sonner"
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -12,13 +13,26 @@ if (!PUBLISHABLE_KEY) {
   throw new Error('Missing Publishable Key')
 }
 
+function Root() {
+  const { theme } = useTheme()
+  
+  return (
+    <ClerkProvider 
+      publishableKey={PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: theme === 'dark' ? dark : undefined,
+      }}
+    >
+      <App />
+      <Toaster />
+    </ClerkProvider>
+  )
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-        <App />
-        <Toaster />
-      </ClerkProvider>
+      <Root />
     </ThemeProvider>
   </StrictMode>,
 )
