@@ -1,0 +1,27 @@
+import express from "express";
+import dotenv from "dotenv";
+import { connectDB } from "../config/db";
+import exampleRoutes from "../routes/example.route"
+import cors from "cors";
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors({origin: process.env.ORIGIN_URL})); // Only allow requests from this origin
+
+app.use(express.json()); // To accept json data in req.body
+
+app.get("/", (req, res) => {
+    res.send('API is Running!')
+});
+
+app.use("/api/examples", exampleRoutes);
+
+app.listen(PORT, () => {
+    connectDB();
+    console.log(`Server is running on PORT: ${PORT}`);
+})
+
+export default app;
