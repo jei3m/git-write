@@ -1,7 +1,8 @@
 import Example from "../models/example.model";
 import mongoose from "mongoose";
+import {Request, Response} from "express"
 
-export const createExample = async (req: any, res: any): Promise<any> => {
+export const createExample = async (req: Request, res: Response): Promise<any> => {
 
     const example = req.body;
 
@@ -20,7 +21,7 @@ export const createExample = async (req: any, res: any): Promise<any> => {
     }
 };
 
-export const getExamples = async (req: any, res: any): Promise<any> => {
+export const getExamples = async (req: Request, res: Response): Promise<any> => {
     try {
         const examples = await Example.find({}); //Empty object to get all examples
         res.status(200).json({success: true, data: examples});
@@ -30,7 +31,7 @@ export const getExamples = async (req: any, res: any): Promise<any> => {
     }
 };
 
-export const updateExample = async (req: any, res: any): Promise<any> => {
+export const updateExample = async (req: Request, res: Response): Promise<any> => {
     const {id} = req.params;
     const example = req.body;
 
@@ -47,7 +48,7 @@ export const updateExample = async (req: any, res: any): Promise<any> => {
     }
 };
 
-export const deleteExample = async (req: any, res: any): Promise<any> => {
+export const deleteExample = async (req: Request, res: Response): Promise<any> => {
     const {id} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
