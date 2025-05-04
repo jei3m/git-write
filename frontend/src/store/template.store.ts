@@ -9,7 +9,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
     createTemplate: async (newTemplate: {userId: string; title: string; content: string; }) => {
         
         if (!newTemplate.userId || !newTemplate.title || !newTemplate.content) {
-            return {success: false, message: "Missing required fields"};
+            return {success: false, message: "All fields are required"};
         }
 
         try {
@@ -44,9 +44,23 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
             }
 
             set({templates: data.data});
-            return {success: true, message: "Templates fetched successfully!"};
+            return {success: true, message: data.message};
         } catch (error) {
             return {success: false, message: "Failed to fetch templates"};            
+        }
+    },
+    fetchTemplateById: async (id: string) => {
+        try {
+            const res = await fetch(`${VITE_API_URL}/api/templates/${id}`);
+            const data = await res.json();
+    
+            if (!data.success) {
+                return {success: false, message: data.message};
+            }
+    
+            return {success: true, message: "Template fetched successfully!", data: data.data};
+        } catch (error) {
+            return {success: false, message: "Failed to fetch template"};
         }
     },
     deleteTemplate: async (tid: string) => {
@@ -57,7 +71,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
             const data = await res.json();
 
             if (!data.success) {
-                return {success: false, message: "Failed to delete template"};
+                return {success: false, message: data.message};
             }
             
             set(state => ({templates: state.templates.filter(template => template._id !== tid)}));
@@ -78,7 +92,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
             const data = await res.json();
 
             if (!data.success) {
-                return {success: false, message: "Failed to update template"};
+                return {success: false, message: data.message, data: null};
             }
 
             set(state => ({templates: state.templates.map(template => template._id === tid ? data : template)}));
