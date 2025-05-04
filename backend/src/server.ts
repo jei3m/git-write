@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "../config/db";
-import exampleRoutes from "../routes/example.route"
+import exampleRoutes from "../routes/example.route";
+import templateRoutes from "../routes/template.route";
 import cors from "cors";
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/examples", exampleRoutes);
+app.use("/api/templates", templateRoutes);
 
 app.listen(PORT, () => {
     connectDB();
