@@ -12,3 +12,11 @@ html body[data-scroll-locked] {
   overflow: visible !important;
   margin-right: 0 !important;
 } 
+
+.md-editor-preview{
+  padding: 4px 8px 4px 8px !important;
+}
+
+.wmde-markdown p {
+  white-space: pre-wrap;
+}
