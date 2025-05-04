@@ -14,15 +14,13 @@ import { CircleX, SquarePen, PlusIcon } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
 import { toast } from "sonner"
 import { TemplateSelectorProps } from '@/types/template.types';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     const { userId } = useAuth();
+    const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
-    const [newTemplate, setNewTemplate] = useState({
-        userId: "",
-        title: "",
-        content: "",
-    });
     const [selectedTemplate, setSelectedTemplate] = useState("");
     
     useEffect(() => {
@@ -35,12 +33,6 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     });
 
-    const handleCreateTemplate = async () => {
-        // Implement template creation logic here
-        // This would typically open a modal or form
-        console.log("Create template clicked");
-    };
-    
     const handleSelectTemplate = (tid: string) => {
         setSelectedTemplate(tid);
         const template = templates.find(t => t._id === tid);
@@ -53,14 +45,15 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
         const {success, message} = await deleteTemplate(tid);
         if (!success) {
             toast.error(message);
+            setSelectedTemplate("");
         } else {
             toast.success(message);
         }
         console.log(success);
     };
 
-    const handleUpdateTemplate = (value: string) => {
-        console.log(`Update template ${value}`);
+    const handleUpdateTemplate = (templateId: string) => {
+        navigate(`/edit-template/${templateId}`);
     };
 
     const handleClearTemplate = () => {
@@ -84,19 +77,18 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
                             </div>
                         ))}
                         {templates.length === 0 && <div className='p-2 text-sm'>No templates found</div>}
-                        <div>
+                        <div key="template-actions">
                             <Button 
                                 className='m-1 bg-gray-100 dark:bg-gray-800 text-xs'
                                 onClick={handleClearTemplate}
                             >
                                 <CircleX/>Clear template
                             </Button>
-                            <Button 
-                                className='m-1 bg-gray-100 dark:bg-gray-800 text-xs'
-                                onClick={handleCreateTemplate}
-                            >
-                                <PlusIcon/>Create template
-                            </Button>
+                            <Link to={'/create'}>
+                                <Button className='m-1 bg-gray-100 dark:bg-gray-800 text-xs'>
+                                    <PlusIcon/>Create template
+                                </Button>
+                            </Link>
                         </div>
                     </SelectGroup>
                 </SelectContent>
