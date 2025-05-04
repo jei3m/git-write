@@ -7,16 +7,15 @@ function AuthContext({children, requireAuth}: AuthContextProps) {
 
     const { isSignedIn, isLoaded } = useAuth();
 
-    if (!isLoaded) {
-        return <Loading/>
-    }
-
-    if (requireAuth && !isSignedIn) {
-        return <Navigate to="/" />;
-    }
-
-    if (!requireAuth && isSignedIn) {
-        return <Navigate to="/home" />;
+    switch (true) {
+        case !isLoaded:
+            return <Loading />;
+        case requireAuth && !isSignedIn:
+            return <Navigate to="/" />;
+        case !requireAuth && isSignedIn:
+            return <Navigate to="/home" />;
+        default:
+            break;
     }
 
     return (
