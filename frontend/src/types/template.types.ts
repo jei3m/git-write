@@ -16,6 +16,7 @@ export interface NoIDTemplate {
 interface TemplateResponse {
     success: boolean;
     message: string;
+    data?: any;
 }
 
 export interface TemplateStore {
@@ -23,6 +24,7 @@ export interface TemplateStore {
     setTemplates: (templates: any[]) => void;
     createTemplate: (newTemplate: NoIDTemplate) => Promise<TemplateResponse>;
     fetchTemplates: (userId?: string) => Promise<TemplateResponse>;
+    fetchTemplateById: (tid: string) => Promise<TemplateResponse>;
     deleteTemplate: (tid: string) => Promise<TemplateResponse>;
     updateTemplate: (tid: string, updatedProduct: NoIDTemplate) => Promise<TemplateResponse>;
 }
