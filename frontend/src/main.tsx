@@ -24,7 +24,7 @@ function Root() {
       }}
     >
       <App />
-      <Toaster richColors position="bottom-right" theme='light' />
+      <Toaster richColors position="bottom-right" theme='light' expand={true} />
     </ClerkProvider>
   )
 }
