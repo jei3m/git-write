@@ -22,10 +22,9 @@ function DeleteDialog({handleDeleteTemplate, template}: DeleteTemplateProps) {
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
           <AlertDialogHeader>
-              <AlertDialogTitle className="text-black dark:text-white">Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle className="text-black dark:text-white">Are you sure?</AlertDialogTitle>
               <AlertDialogDescription className="text-black dark:text-white">
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
+              This action cannot be undone. This will permanently delete your created template.
               </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
