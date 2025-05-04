@@ -34,6 +34,27 @@ export const getTemplates = async (req: Request, res: Response): Promise<any> =>
     }
 };
 
+export const getTemplateById = async (req: Request, res: Response): Promise<any> => {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Invalid Template ID!" });
+    }
+    
+    try {
+        const template = await Template.findById(id);
+        
+        if (!template) {
+            return res.status(404).json({ success: false, message: "Template not found" });
+        }
+        
+        res.status(200).json({ success: true, data: template });
+    } catch (error) {
+        console.error(`Error in Get Template By ID: ${error}`);
+        res.status(500).json({ success: false, message: "Internal Server Error" })
+    }
+};
+
 export const updateTemplate = async (req: Request, res: Response): Promise<any> => {
     const {id} = req.params;
     const template = req.body;
