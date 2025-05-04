@@ -5,7 +5,7 @@ import App from './Router.tsx'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { dark} from '@clerk/themes'
 import { ThemeProvider, useTheme } from './contexts/ThemeProvider.tsx'
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner.tsx"
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -24,7 +24,7 @@ function Root() {
       }}
     >
       <App />
-      <Toaster />
+      <Toaster richColors position="bottom-right" theme='light' />
     </ClerkProvider>
   )
 }
