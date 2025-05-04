@@ -1,9 +1,10 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import AuthContext from './contexts/AuthContext';
 import Home from './pages/Home';
-import Authed from './pages/Authed';
-import Edit from './pages/Edit';
+import Edit from './pages/EditMD';
 import Navbar from './components/custom/Navbar';
+import CreateTemplate from './pages/CreateTemplate';
+import EditTemplate from './pages/EditTemplate';
 
 function Router() {
   return (
@@ -20,14 +21,21 @@ function Router() {
         <Route path="/home" 
           element={
             <AuthContext requireAuth={true}>
-              <Authed />
+              <Edit />
             </AuthContext>
           } 
         />
-        <Route path="/edit" 
+        <Route path="/create" 
           element={
             <AuthContext requireAuth={true}>
-              <Edit />
+              <CreateTemplate />
+            </AuthContext>
+          } 
+        />
+        <Route path="/edit-template/:id" 
+          element={
+            <AuthContext requireAuth={true}>
+              <EditTemplate />
             </AuthContext>
           } 
         />
