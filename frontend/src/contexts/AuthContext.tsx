@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
-import { AuthContextProps } from "../types/AuthContextProps";
+import { AuthContextProps } from "../types/auth.types.";
 import Loading from "../components/custom/Loading";
 
 function AuthContext({children, requireAuth}: AuthContextProps) {
