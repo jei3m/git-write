@@ -1,0 +1,37 @@
+export interface Template {
+    _id: string;
+    userId: string;
+    title: string;
+    content: string;
+    createdAt: string,
+    updatedAt: string,
+}
+
+export interface NoIDTemplate {
+    userId: string;
+    title: string;
+    content: string;
+}
+
+interface TemplateResponse {
+    success: boolean;
+    message: string;
+}
+
+export interface TemplateStore {
+    templates: Template[];
+    setTemplates: (templates: any[]) => void;
+    createTemplate: (newTemplate: NoIDTemplate) => Promise<TemplateResponse>;
+    fetchTemplates: (userId?: string) => Promise<TemplateResponse>;
+    deleteTemplate: (tid: string) => Promise<TemplateResponse>;
+    updateTemplate: (tid: string, updatedProduct: NoIDTemplate) => Promise<TemplateResponse>;
+}
+
+export interface TemplateSelectorProps {
+    setMarkdown: (value: string) => void;
+}
+
+export interface DeleteTemplateProps {
+    handleDeleteTemplate: (id: string) => void;
+    template: any;
+}
