@@ -4,6 +4,7 @@ import MarkdownEditor from '@uiw/react-markdown-editor';
 import { markdown } from '@/utils/markdown';
 import { Button } from '@/components/ui/button';
 import { SignInButton } from '@clerk/clerk-react';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const { theme } = useTheme();
@@ -27,7 +28,9 @@ function Home() {
         <Button className='text-white dark:text-black bg-black dark:bg-white'>
           <SignInButton mode="modal" />
         </Button>
-        <Button className='text-black dark:text-white'>View Repository</Button>
+        <Link to={'https://github.com/jei3m'} target='_blank'>
+          <Button className='text-black dark:text-white'>View Repository</Button>
+        </Link>
       </div>
       <div className='mx-auto rounded-2xl p-4 max-w-7xl bg-gray-300 dark:bg-neutral-800'>
         <MarkdownEditor
