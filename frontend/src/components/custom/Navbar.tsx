@@ -1,19 +1,22 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { ToggleMode } from "./navbar/ToggleMode";
+import { ToggleMode } from "../navbar/ToggleMode";
 import { FileText } from "lucide-react";
 
 function Navbar() {
   return (
     <>
       <SignedIn>
-        <nav className="flex items-center justify-between py-2 px-6 h-[50px] border-b border-gray-300 dark:border-neutral-700 dark:bg-neutral-950"> 
+        <nav className="flex items-center justify-between py-2 px-6 h-[54px] border-b border-gray-300 dark:border-neutral-700 dark:bg-neutral-950"> 
 
           <Link to="/" className="flex flex-row items-center text-lg font-bold text-black dark:text-white">
               <FileText className="mr-1"/>
               GitWrite.
           </Link>
+          {/* <div>
+            <Button className="text-black text-sm bg-white ">Repositories</Button>
+          </div> */}
           <div className="flex items-center gap-4">
             <div className="flex flex-row items-center gap-x-3">
                 <ToggleMode />
