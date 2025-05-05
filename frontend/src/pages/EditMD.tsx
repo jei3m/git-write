@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useTheme } from '../contexts/ThemeProvider';
 import { DownloadIcon } from 'lucide-react';
-import TemplateSelector from '@/components/custom/edit/TemplateSelector';
+import TemplateSelector from '@/components/edit/TemplateSelector';
 import { Button } from '@/components/ui/button';
 
 function Edit() {
