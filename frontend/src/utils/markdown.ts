@@ -1,111 +1,112 @@
 export const markdown = `
+# GitWrite
+
+GitWrite is a modern markdown editor designed specifically for creating and managing README files for GitHub repositories. It provides a streamlined interface for writing documentation with features like template management and direct GitHub repository integration, helping developers create beautiful documentation without repetitive work.
+
 ## Features
 
- **Plant State Detection**
-- **Gemini 2.0 Flash** is used to analyze images of plants uploaded by users. It assesses the plant's health and growth, offering insights such as whether the plant is thriving or needs attention. The AI can also detect symptoms of common plant diseases or issues related to nutrition and environmental conditions.
+- **Markdown Editor**: A full-featured markdown editor with support for common formatting options including headers, lists, code blocks, and more.
 
-**Real-Time Sensor Monitoring**
-- **Blynk API** integrates various environmental sensors, providing real-time data on factors like temperature, humidity, and other parameters that influence plant growth. This data is accessible through the app’s dashboard, ensuring users can monitor their aeroponic system remotely and act accordingly.
+- **Dark/Light Mode**: Seamless theme switching between dark and light modes for comfortable editing in any environment.
 
-**Plant Intelligence**
-- A custom knowledge base implemented to enhance the AI chatbot’s responses with precise, data-backed insights on plant care, environmental factors, disease management, and optimal growth strategies for various crops. 
+- **Template Management**: Create, edit, and save reusable markdown templates to maintain consistency across projects and avoid rewriting common documentation sections.
 
-**Weather Forecast**
- - The OpenWeather API is used to provide users with weather forecasts based on their set address. This allows users to anticipate environmental conditions and adjust their aeroponic system accordingly.  This forecast is accessible through the app's dashboard, enabling users to optimize their aeroponic system based on current weather conditions.
- 
-**Firebase Integration**
-- **Firebase** is used for user authentication (via Google), storing user data in the cloud, and synchronizing real-time changes across devices. This ensures seamless access to plant information and system controls from multiple devices.
+- **GitHub Repository Integration**: Connect to your GitHub account to access your repositories, view existing README files, and update them directly.
 
-**AI-Powered Chatbot**
-- The **Gemini 2.0 Flash** chatbot delivers real-time, personalized plant care advice by analyzing sensor data, current weather forecast, and user input. It answers specific user queries to help maintain plant health within aeroponic systems.
+- **Download Option**: Export your markdown files locally with a simple download button when working offline.
 
-**Email Notifications**
-- Users will receive email alerts when critical environmental conditions, like temperature thresholds, are reached. This feature helps ensure that the user is alerted if immediate actions are required.
+- **User Authentication**: Secure user authentication powered by Clerk, allowing personalized template storage and GitHub account connection.
 
-**Multiple Blynk API Keys**
-- The application supports the use of **multiple Blynk API keys**, enabling users to manage different aeroponic systems and switch between them seamlessly, which is especially useful for users with multiple setups.
+- **Responsive Design**: A clean, modern interface that works well on various screen sizes, built with Tailwind CSS.
 
 ## Technologies Used
 
-**React JS**
-- A JavaScript based framework created by Meta. This is the framework of choice due to its component based architecture, which facilitates the creation of dynamic and responsive user interfaces. Additionally, it has multiple supported libraries which are implemented to reduce the time needed for development.
+- **React**: A JavaScript library for building user interfaces, providing a component-based architecture for the frontend.
 
-**Ant Design**
-- A comprehensive React UI library developed by Ant Group. It provides a rich set of high-quality components and design principles, enabling developers to build consistent user interfaces efficiently.
+- **TypeScript**: A strongly typed programming language that builds on JavaScript, enhancing code quality and developer experience.
 
-**Gemini 2.0 Flash**
-- A multimodal large language model developed by Google, chosen for its ability to both analyze plant images and function as a chatbot. This model leverages sensor data,  plant information, and current weather forecast as context, allowing it to provide more accurate insights by combining image detection with conversational capabilities.
+- **Vite**: A modern frontend build tool that provides a faster and leaner development experience.
 
-**Blynk API**
-- A low-code IoT cloud platform which is ideal for IoT projects like AI-Ponics, as it offers real-time data integration and monitoring for various sensors. Its ease of use and extensive support for hardware integration, and API support made it the perfect choice for this project.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
 
-**OpenWeather API**
-- A weather data service that delivers real-time and forecasted weather information based on user-defined locations. This data is utilized in the Weather Forecast feature and is also integrated into the AI chatbot, allowing users to make informed decisions and optimize their aeroponic system based on current environmental conditions.
+- **Clerk**: Authentication and user management service that handles user sign-in and identity.
 
-**Firebase**
-- A comprehensive backend platform developed by Google, chosen for its services such as user authentication, real-time database management, and cloud storage. Firebase efficiently handles user profiles, and enables real-time data synchronization across devices, making it an ideal solution for the AI-Ponics web application.
+- **Zustand**: A small, fast, and scalable state-management solution for React applications.
 
-## Parts
+- **React Markdown Editor**: The \`@uiw/react-markdown-editor\` component provides a rich editing experience with live preview.
 
-### **ESP32 Development Board**
-- A low-cost, versatile microcontroller. Chosen for its built-in WiFi module and direct compatibility with the Blynk API. Additionally it has support for Email libraries which are then utilized for the Email notification feature of the system.
+- **Express.js**: A minimal and flexible Node.js web application framework used for the backend API.
 
-![Image](https://github.com/user-attachments/assets/41a04621-ba4c-4440-af4f-1e572a43edca)
+- **MongoDB**: A NoSQL database used to store user templates and other application data.
 
+- **GitHub API**: Used to fetch repositories and README files from users' GitHub accounts.
 
-### **DHT22**
-- A temperature and humidity sensor. This is used for monitoring environmental conditions, with a temperature range of -40°C to 80°C and a humidity range of 0% to 100%. While its accuracy is ±0.5°C for temperature and ±1%.
+## Installation
 
-![Image](https://github.com/user-attachments/assets/23f49f05-ef8f-48cc-85aa-bf335c50f4be)
+To set up GitWrite locally, follow these steps:
 
+1. **Clone the Repository**
+    
+    \`\`\`shell
+    git clone https://github.com/jei3m/gitwrite
+    cd gitwrite
+    \`\`\`
+    
+2. **Install Dependencies**
+    
+    \`\`\`shell
+    # Install frontend dependencies
+    cd frontend
+    npm install
+    
+    # Install backend dependencies
+    cd ../backend
+    npm install
+    \`\`\`
+    
+3. **Set Up Environment Variables**
+    
+    Create a \`.env\` file in the root directory of both frontend and backend folders.
+    
+    Frontend \`.env\` file:
+    \`\`\`dotenv
+    VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+    VITE_API_URL=http://localhost:5000
+    \`\`\`
+    
+    Backend \`.env\` file:
+    \`\`\`dotenv
+    PORT=5000
+    MONGODB_URI=your_mongodb_connection_string
+    ORIGIN_URL=http://localhost:5173
+    \`\`\`
+    
+4. **Start the Development Server**
+    
+    \`\`\`shell
+    # Start backend server
+    cd backend
+    npm run dev
+    
+    # In a new terminal, start frontend server
+    cd frontend
+    npm run dev
+    \`\`\`
+    
+5. **Open Your Browser**
+    
+    Navigate to \`http://localhost:5173\` to view the application.
+    
 
-### **YF-S201**
-- A Hall Effect water flow sensor with a working flow rate of 1 to 30 liters per minute and an accuracy of ±10%, used for monitoring the pump operation of the AI-Ponics system.
+## Usage
 
-![Image](https://github.com/user-attachments/assets/c9811138-0278-4bb1-bf75-0ca1785fb7f3)
+- **Creating Templates**: Click on the "Create template" button to create reusable markdown templates for your documentation.
 
-### **PH-4502C**
-- An analog pH sensor module designed for measuring the acidity or alkalinity of a solution, with a measurement range of 0 to 14 pH. It features an adjustable potentiometer for calibration and provides an analog voltage output corresponding to the pH level. Used in the AI-Ponics system to monitor  optimal nutrient solution conditions.
+- **Editing Templates**: Select a template from the dropdown menu and modify it as needed. Changes can be saved for future use.
 
-![Image](https://github.com/user-attachments/assets/6682ce8d-7d46-4129-adb0-a6f2a5172d39)
+- **Working with GitHub Repositories**: Select the "Repository" option from the feature dropdown, connect your GitHub account, and choose a repository to view or edit its README.
 
+- **Downloading README Files**: Click the download button to save your markdown file locally.
 
-### **0.96 OLED Screen**
-- A compact display with a resolution of 128x64 pixels, commonly used to show real-time data such of sensor readings, and email alert status, in the AI-Ponics system.
-
-![Image](https://github.com/user-attachments/assets/57ce72b4-f97a-4060-8605-ef03667b44b8)
-
-
-## Schematic
-
-The schematic diagram below illustrates the connections between the ESP32 Dev Board and the aforementioned sensors:
-
-![Image](https://github.com/user-attachments/assets/c39699b8-886d-4988-b4f2-5487bd710778)
-
-### DHT22
-
-![Image](https://github.com/user-attachments/assets/84ef0929-5de7-4a24-a241-93d825834378)
-
-The 3.3V pin is connected to the positive terminal of the DHT22 sensor, while the GND pin is connected to the negative terminal of the sensor. The data pin of the DHT22 sensor is connected to the D27 pin of the ESP32 Dev Board.
-
-### YF-S201
-
-![Image](https://github.com/user-attachments/assets/6a865d2e-c72d-472c-bb8e-967aaf142d0d)
-
-The positive terminal is connected to the VIN pin of the Dev Board, and the negative terminal is connected to the GND pin located just above the VIN pin on the Dev Board. While the signal pin is connected to the D26 pin of the Dev Board. The VIN pin of the Dev Board is used to power the Water Flow Sensor instead of other power options. Since the VIN pin on the ESP32 Dev Board can function as either an input or an output pin, depending on how the module is powered.
-
-### OLED Display
-
-![Image](https://github.com/user-attachments/assets/2fbda1f2-2a9d-48e7-ae38-5d7659c5e01e)
-
-The VCC pin of the OLED display is connected in parallel with the positive terminal of the DHT22 sensor at the 3.3V pin of the ESP32 module, while the GND pin of the OLED is connected in parallel with the DHT22 sensor at the GND pin of the ESP32 module. The SCL pin is connected to the D22 pin (default I2C clock line) of the ESP32, and the SDA pin is connected to the D21 pin. The ESP32 has flexible I2C pin assignments, allowing any I2C pin to be configured as SDA or SCL. However, GPIO21 (SDA) and GPIO22 (SCL) are commonly used as default I2C pins for compatibility with existing code, and libraries.
-
-### PH-4502C
-
-![Image](https://github.com/user-attachments/assets/1d0d9d82-6f38-48cb-90e7-c3b4780fb559)
-
-The V+ pin of the sensor is connected to the VIN pin of the ESP32 module, in parallel with the VCC pin of the YF-S201 Water Flow Sensor. The G pin of the sensor is connected to the GND pin located next to the VIN pin of the module. The analog output pin (Po) is connected to the D33 pin of the module.
-
-Before connecting the Po pin, the sensor's potentiometer is adjusted first to ensure the analog voltage reaches 2.50V. After adjusting the potentiometer, the sensor is further calibrated via code using a two-point calibration method with buffer solutions at pH 4.01 and pH 6.86.
-
+- **Publishing to GitHub**: When working with a repository, use the publish button to update the README directly on GitHub (a feature still in development).
 `
