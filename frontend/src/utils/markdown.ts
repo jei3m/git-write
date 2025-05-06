@@ -1,7 +1,6 @@
-export const markdown = `
-# GitWrite
+export const markdown = `# GitWrite
 
-GitWrite is a modern markdown editor designed specifically for creating and managing README files for GitHub repositories. It provides a streamlined interface for writing documentation with features like template management and direct GitHub repository integration, helping developers create beautiful documentation without repetitive work.
+GitWrite provides a streamlined interface for writing documentation through the use of templates and fetching README files from your public GitHub repositories, helping developers create consistent documentation without repetitive work.
 
 ## Features
 
@@ -13,7 +12,7 @@ GitWrite is a modern markdown editor designed specifically for creating and mana
 
 - **GitHub Repository Integration**: Connect to your GitHub account to access your repositories, view existing README files, and update them directly.
 
-- **Download Option**: Export your markdown files locally with a simple download button when working offline.
+- **Download Option**: Export your markdown files locally with a simple download function.
 
 - **User Authentication**: Secure user authentication powered by Clerk, allowing personalized template storage and GitHub account connection.
 
