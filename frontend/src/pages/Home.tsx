@@ -14,7 +14,7 @@ function Home() {
   }, [theme]);
     
   return (
-    <div className="min-h-[95dvh] bg-gray-100 dark:bg-neutral-950 py-8">
+    <div className="absolute z-10 w-full bg-gray-100 dark:bg-neutral-950 py-8">
       <div className='mt-[6rem] max-w-[240px] mx-auto text-center bg-gray-200 dark:bg-neutral-700 py-1 px-2 rounded-full text-sm text-black dark:text-gray-300 border border-gray-400 dark:border-neutral-500'>
         Markdown Editing for Everyone
       </div>
