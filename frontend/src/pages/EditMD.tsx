@@ -6,7 +6,7 @@ import TemplateSelector from '@/components/edit/TemplateSelector';
 import { Button } from '@/components/ui/button';
 import SelectRepos from '@/components/edit/SelectRepos';
 import SelectFeature from '@/components/edit/SelectFeature';
-import { useRepoStore } from "@/store/repo.store";
+import { useGithubStore } from "@/store/github.store";
 import { toast } from 'sonner';
 
 function Edit() {
@@ -36,7 +36,7 @@ function Edit() {
     setMarkdown("")
     setSelectedRepo("")
     setRepoName("")
-    useRepoStore.setState({ readme: "" })
+    useGithubStore.setState({ readme: "" })
   }
 
   useEffect(() => {
@@ -44,66 +44,64 @@ function Edit() {
   }, [theme]);
 
   return (
-    <div className='min-h-[95dvh] w-full bg-gray-100 dark:bg-neutral-900'>
-      <div className='p-4 max-w-[80%] mx-auto'>
-        <div className='flex flex-row justify-between'>
-          <h1 className="text-3xl font-bold mb-4 text-black dark:text-white">Markdown Editor</h1>
-          <div className='flex flex-row gap-4'>
+    <div className='p-4 max-w-[80%] mx-auto'>
+      <div className='flex flex-row justify-between'>
+        <h1 className="text-3xl font-bold mb-4 text-black dark:text-white">Markdown Editor</h1>
+        <div className='flex flex-row gap-4'>
 
-            {!selectedFeature ? (
-              <div className='flex flex-row gap-x-3'>
-                <SelectFeature setSelectedFeature={setSelectedFeature} selectedFeature={selectedFeature} />
-              </div>
-            ) :(
-              <Button className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
-                onClick={handleClearFeature}
-              >
-                <CircleXIcon/>
-              </Button>
-            )}
-
-            {selectedFeature === "repos" && 
-              <SelectRepos 
-                selectedRepo={selectedRepo}
-                setSelectedRepo={setSelectedRepo}
-                repoName={repoName}
-                setRepoName={setRepoName}
-                setMarkdown={setMarkdown}
-              />
-            }
-
-            {selectedFeature === "templates" && 
-              <TemplateSelector setMarkdown={setMarkdown} /> 
-            }
-
-            <Button 
-              className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
-              onClick={handleDownload}
+          {!selectedFeature ? (
+            <div className='flex flex-row gap-x-3'>
+              <SelectFeature setSelectedFeature={setSelectedFeature} selectedFeature={selectedFeature} />
+            </div>
+          ) :(
+            <Button className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
+              onClick={handleClearFeature}
             >
-              <DownloadIcon/>Download
+              <CircleXIcon/>
             </Button>
+          )}
 
-          </div>
+          {selectedFeature === "repos" && 
+            <SelectRepos 
+              selectedRepo={selectedRepo}
+              setSelectedRepo={setSelectedRepo}
+              repoName={repoName}
+              setRepoName={setRepoName}
+              setMarkdown={setMarkdown}
+            />
+          }
+
+          {selectedFeature === "templates" && 
+            <TemplateSelector setMarkdown={setMarkdown} /> 
+          }
+
+          <Button 
+            className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
+            onClick={handleDownload}
+          >
+            <DownloadIcon/>Download
+          </Button>
+
         </div>
-        <MarkdownEditor
-          value={markdown}
-          height="80dvh"
-          className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
-          onChange={(value) => setMarkdown(value)}
-          visible={true}
-          toolbars={[
-            'undo',
-            'redo',
-            'bold',
-            'italic',
-            'header',
-            'quote',
-            'olist',
-            'ulist',
-            'link',
-          ]}
-        />
       </div>
+      <MarkdownEditor
+        value={markdown}
+        height="80dvh"
+        className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
+        onChange={(value) => setMarkdown(value)}
+        visible={true}
+        toolbars={[
+          'undo',
+          'redo',
+          'bold',
+          'italic',
+          'header',
+          'quote',
+          'olist',
+          'ulist',
+          'link',
+        ]}
+      />
     </div>
   )
 }
