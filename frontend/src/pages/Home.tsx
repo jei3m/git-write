@@ -3,11 +3,16 @@ import { useTheme } from '../contexts/ThemeProvider';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { markdown } from '@/utils/markdown';
 import { Button } from '@/components/ui/button';
-import { SignInButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function Home() {
+  const {loginWithRedirect} = useAuth0();
   const { theme } = useTheme();
+
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
 
   useEffect(() => {
     document.documentElement.setAttribute('data-color-mode', theme === 'dark' ? 'dark' : 'light');
@@ -25,8 +30,8 @@ function Home() {
         Write beautiful documentation and README files with this markdown editor. Create your templates, use them, and avoid rewriting repetitively.
       </p>
       <div className='flex flex-row justify-center py-10 gap-x-4'>
-        <Button className='text-white dark:text-black bg-black dark:bg-white'>
-          <SignInButton mode="modal" />
+        <Button className='text-white dark:text-black bg-black dark:bg-white' onClick={handleLogin}>
+          Get Started
         </Button>
         <Link to={'https://github.com/jei3m'} target='_blank'>
           <Button className='text-black dark:text-white'>View Repository</Button>

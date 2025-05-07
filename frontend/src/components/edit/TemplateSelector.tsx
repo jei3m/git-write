@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 import { useTemplateStore } from '@/store/template.store';
-import { useAuth } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { CircleX, SquarePen, PlusIcon, Search } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
@@ -13,7 +13,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
-    const { userId } = useAuth();
+    const { user } = useAuth0();
+    const userId = user?.sub || user?.user_id;
     const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
     const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -51,7 +52,6 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
         } else {
             toast.success(message);
         }
-        console.log(success);
     };
 
     const handleUpdateTemplate = (templateId: string) => {
@@ -75,7 +75,7 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
                     variant="outline" 
                     className="w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    {getSelectedTemplateName()}
+                    <span className='truncate'>{getSelectedTemplateName()}</span>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">

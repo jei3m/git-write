@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import { useRepoStore } from "@/store/repo.store";
-import { useUser } from "@clerk/clerk-react";
+import { useGithubStore } from "@/store/github.store";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@/components/ui/button";
 import { CircleX, Search } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
-function SelectRepos({selectedRepo, setSelectedRepo, repoName, setRepoName, setMarkdown}: any) {
-    const { repos, fetchRepos, readme, fetchReadme } = useRepoStore();
-    const { user } = useUser();
+function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: any) {
+    const { user } = useAuth0();
+    const { repos, fetchRepos, readme, fetchReadme } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const githubUsername = user?.externalAccounts.find(
-        (account) => account.provider === "github"
-    )?.username;
+    const githubUsername = user?.nickname;
 
     const filteredRepos = repos.filter(repo => 
         repo.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -51,7 +49,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, repoName, setRepoName, setM
                     variant="outline" 
                     className="w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    {selectedRepo || "Select Repository"}
+                    <span className="truncate">{selectedRepo || "Select Repository"}</span>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[220px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
