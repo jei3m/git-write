@@ -4,7 +4,7 @@ import { useTheme } from '../contexts/ThemeProvider';
 import { CircleXIcon, DownloadIcon } from 'lucide-react';
 import TemplateSelector from '@/components/edit/TemplateSelector';
 import { Button } from '@/components/ui/button';
-import SelectRepos from '@/components/edit/SelectRepos';
+import SelectRepos from '@/components/edit/RepoSelector';
 import SelectFeature from '@/components/edit/SelectFeature';
 import { useGithubStore } from "@/store/github.store";
 import { toast } from 'sonner';
@@ -87,7 +87,7 @@ function Edit() {
       <MarkdownEditor
         value={markdown}
         height="80dvh"
-        className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
+        className='min-w-[100%] mx-auto prose-sm md:prose-base prose-invert'
         onChange={(value) => setMarkdown(value)}
         visible={true}
         toolbars={[
