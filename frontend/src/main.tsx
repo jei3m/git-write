@@ -2,30 +2,28 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './Router.tsx'
-import { ClerkProvider } from '@clerk/clerk-react'
-import { dark} from '@clerk/themes'
-import { ThemeProvider, useTheme } from './contexts/ThemeProvider.tsx'
+import { Auth0Provider } from '@auth0/auth0-react';
+import { ThemeProvider } from './contexts/ThemeProvider.tsx'
 import { Toaster } from "@/components/ui/sonner.tsx"
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error('Missing Publishable Key')
-}
-
 function Root() {
-  const { theme } = useTheme()
-  
+  const domain = import.meta.env.VITE_AUTH_DOMAIN;
+  const clientId = import.meta.env.VITE_AUTH_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_REDIRECT_URI;
+
+
   return (
-    <ClerkProvider 
-      publishableKey={PUBLISHABLE_KEY}
-      appearance={{
-        baseTheme: theme === 'dark' ? dark : undefined,
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: redirectUri,
       }}
     >
       <App />
       <Toaster richColors position="bottom-right" theme='light' expand={true} />
-    </ClerkProvider>
+      
+    </Auth0Provider>
   )
 }
 
