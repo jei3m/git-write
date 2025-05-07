@@ -60,7 +60,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
                             placeholder="Search repositories..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-8 flex-1 bg-transparent text-black dark:text-white focus-visible:ring-0"
+                            className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
                         />
                     </div>
                     <ScrollArea className="h-[200px]">
