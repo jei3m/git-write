@@ -5,15 +5,16 @@ import Edit from './pages/EditMD';
 import Navbar from './components/custom/Navbar';
 import CreateTemplate from './pages/CreateTemplate';
 import EditTemplate from './pages/EditTemplate';
+import UnauthBar from './components/navbar/UnauthBar';
 
 function Router() {
   return (
     <BrowserRouter>
-      <Navbar/>
       <Routes>
         <Route path="/" 
           element={
             <AuthContext requireAuth={false}>
+              <UnauthBar/>
               <Home />
             </AuthContext>
           } 
@@ -21,6 +22,7 @@ function Router() {
         <Route path="/home" 
           element={
             <AuthContext requireAuth={true}>
+              <Navbar/>
               <Edit />
             </AuthContext>
           } 
@@ -28,6 +30,7 @@ function Router() {
         <Route path="/create" 
           element={
             <AuthContext requireAuth={true}>
+              <Navbar/>
               <CreateTemplate />
             </AuthContext>
           } 
@@ -35,6 +38,7 @@ function Router() {
         <Route path="/edit-template/:id" 
           element={
             <AuthContext requireAuth={true}>
+              <Navbar/>
               <EditTemplate />
             </AuthContext>
           } 

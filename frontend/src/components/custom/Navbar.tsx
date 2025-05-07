@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToggleMode } from "../navbar/ToggleMode";
-import { FileText, ExternalLink } from "lucide-react";
+import { FileText } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
-import UnauthBar from "../navbar/UnauthBar";
 import ProfileDialog from "../navbar/ProfileDialog";
 import { useGithubStore } from "@/store/github.store";
 import { GithubUser } from "@/types/github.types";
@@ -25,12 +24,6 @@ function Navbar() {
       setGithubUser(gitUser);
     }
   }, [gitUser]);
-
-  if (!isAuthenticated) {
-    return (
-      <UnauthBar />
-    )
-  }
 
   return (
     <>
