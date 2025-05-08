@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useTheme } from '../contexts/ThemeProvider';
-import { SaveIcon, X } from 'lucide-react';
+import { Loader2, SaveIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTemplateStore } from '@/store/template.store';
@@ -16,6 +16,7 @@ function EditTemplate() {
     const { fetchTemplateById, updateTemplate } = useTemplateStore();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [isUpdating, setIsUpdating] = useState(false);
 
     const [template, setTemplate] = useState({
         userId: userId,
@@ -44,6 +45,8 @@ function EditTemplate() {
 
     const handleUpdateTemplate = async () => {
 
+        setIsUpdating(true);
+
         switch (true) {
             case !template.title:
                 toast.error('Please enter a template title');
@@ -67,9 +70,11 @@ function EditTemplate() {
 
         if (success) {
             toast.success(message);
+            setIsUpdating(false);
             navigate('/home');
         } else {
             toast.error(message);
+            setIsUpdating(false);
         }
     };
 
@@ -90,14 +95,22 @@ function EditTemplate() {
                     required
                 />
                 <div className='flex flex-row gap-4'>
-                    <Link to="/home">
-                        <Button type="button" className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+
+                    <Button type="button" asChild={!isUpdating} disabled={isUpdating} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+                        <Link to="/home" className='flex items-center gap-x-2'>
                             <X/>Cancel
-                        </Button>
-                    </Link>
-                    <Button onClick={handleUpdateTemplate} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
-                        <SaveIcon/>Update
+                        </Link>
                     </Button>
+
+                    {isUpdating ? (
+                        <Button disabled={isUpdating} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+                            <Loader2 className='animate-spin'/>Updating...
+                        </Button>
+                    ):(
+                        <Button disabled={isUpdating} onClick={handleUpdateTemplate} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+                            <SaveIcon/>Update
+                        </Button>
+                    )}
                 </div>
             </div>
             <MarkdownEditor
