@@ -21,7 +21,7 @@ export const createTemplate = async (req: Request, res: Response): Promise<any> 
     }
 
 };
-
+// for a non unique identifier, a.get/ route is utilized (query parameter)
 export const getTemplates = async (req: Request, res: Response): Promise<any> => {
     try {
         const {userId} = req.query;
@@ -33,7 +33,7 @@ export const getTemplates = async (req: Request, res: Response): Promise<any> =>
         res.status(500).json({ success: false, message: "Internal Server Error" })
     }
 };
-
+// for unique identifier _id, a .get/:id route is utilized
 export const getTemplateById = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
     
