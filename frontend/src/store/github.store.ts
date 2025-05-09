@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import {RepoStore, GithubUser} from "@/types/github.types";
+import {RepoStore} from "@/types/github.types";
+import axios from "axios";
 
 export const useGithubStore = create<RepoStore>((set) => ({
     readme: "",
@@ -8,8 +9,7 @@ export const useGithubStore = create<RepoStore>((set) => ({
     setRepos: (repos) => set({repos}),
     fetchRepos: async (githubUsername?: string) => {
         try {
-            const res = await fetch(`https://api.github.com/users/${githubUsername}/repos`);
-            const data = await res.json();
+            const { data} = await axios.get(`https://api.github.com/users/${githubUsername}/repos`)
 
             if (Array.isArray(data)) {
                 set({repos: data});
@@ -23,8 +23,7 @@ export const useGithubStore = create<RepoStore>((set) => ({
     },
     fetchReadme: async (full_name: string) => {
         try {
-            const res = await fetch(`https://raw.githubusercontent.com/${full_name}/main/README.md`)
-            const data = await res.text();
+            const { data } = await axios.get(`https://raw.githubusercontent.com/${full_name}/main/README.md`);
 
             set({readme: data});
             return {success: true, message: "Readme fetched successfully"};
@@ -35,12 +34,7 @@ export const useGithubStore = create<RepoStore>((set) => ({
     },
     fetchUserData: async (githubUsername: string) => {
         try {
-            const res = await fetch(`https://api.github.com/users/${githubUsername}`);
-            const data = await res.json() as GithubUser;
-            
-            if (!res.ok) {
-                return {success: false, message: `Failed to fetch user data: ${res.statusText}`};
-            }
+            const { data } = await axios.get(`https://api.github.com/users/${githubUsername}`);
 
             set({gitUser: data});
             return {success: true, message: "User data fetched successfully"};

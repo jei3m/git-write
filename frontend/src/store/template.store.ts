@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {TemplateStore} from "@/types/template.types";
+import axios from "axios";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,15 +14,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
         }
 
         try {
-            const res = await fetch(`${VITE_API_URL}/api/templates`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newTemplate)
-            })
-
-            const data = await res.json();
+            const {data} = await axios.post(`${VITE_API_URL}/api/templates`, newTemplate);
 
             if (!data.success) {
                 return {success: true, message: data.message};
@@ -36,8 +29,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
     },
     fetchTemplates: async (userId?: string) => {
         try {
-            const res = await fetch(`${VITE_API_URL}/api/templates?userId=${userId}`);
-            const data = await res.json();
+            const {data} = await axios.get(`${VITE_API_URL}/api/templates`, {params: {userId}});
 
             if (!data.success) {
                 return {success: false, message: data.message};
@@ -51,8 +43,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
     },
     fetchTemplateById: async (id: string) => {
         try {
-            const res = await fetch(`${VITE_API_URL}/api/templates/${id}`);
-            const data = await res.json();
+            const { data } = await axios.get(`${VITE_API_URL}/api/templates/${id}`);
     
             if (!data.success) {
                 return {success: false, message: data.message};
@@ -65,10 +56,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
     },
     deleteTemplate: async (tid: string) => {
         try {
-            const res = await fetch(`${VITE_API_URL}/api/templates/${tid}`, {
-                method:"DELETE",
-            })
-            const data = await res.json();
+            const { data } = await axios.delete(`${VITE_API_URL}/api/templates/${tid}`);
 
             if (!data.success) {
                 return {success: false, message: data.message};
@@ -82,14 +70,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
     },
     updateTemplate: async (tid: string, updatedTemplate: {userId: string; title: string; content: string;}) => {
         try {
-            const res = await fetch(`${VITE_API_URL}/api/templates/${tid}`, {
-                method: "PUT",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedTemplate)
-            })
-            const data = await res.json();
+            const { data } = await axios.put(`${VITE_API_URL}/api/templates/${tid}`, updatedTemplate);
 
             if (!data.success) {
                 return {success: false, message: data.message, data: null};
