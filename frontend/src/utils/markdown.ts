@@ -14,7 +14,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **Download Option**: Export your markdown files locally with a simple download function.
 
-- **User Authentication**: Secure user authentication powered by Clerk, allowing personalized template storage and GitHub account connection.
+- **User Authentication**: Secure user authentication powered by Auth0, allowing personalized template storage and GitHub account connection.
 
 - **Responsive Design**: A clean, modern interface that works well on various screen sizes, built with Tailwind CSS.
 
@@ -28,7 +28,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
 
-- **Clerk**: Authentication and user management service that handles user sign-in and identity.
+- **Auth0**: Authentication and user management service that handles user sign-in and identity.
 
 - **Zustand**: A small, fast, and scalable state-management solution for React applications.
 
@@ -69,7 +69,9 @@ To set up GitWrite locally, follow these steps:
     
     Frontend \`.env\` file:
     \`\`\`dotenv
-    VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+    VITE_AUTH_DOMAIN=your_auth0_domain
+    VITE_AUTH_CLIENT_ID=your_auth0_client_id
+    VITE_REDIRECT_URI=your_redirect_uri
     VITE_API_URL=http://localhost:5000
     \`\`\`
     
