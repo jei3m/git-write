@@ -41,7 +41,7 @@ function Home() {
         <MarkdownEditor
           value={markdown}
           height="80dvh"
-          className='min-w-full mx-auto prose prose-sm md:prose-base dark:prose-invert'
+          className='min-w-full mx-auto prose-sm md:prose-base prose-invert'
           visible={true}
           toolbars={[
             'undo',
