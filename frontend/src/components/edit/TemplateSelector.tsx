@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     const { user } = useAuth0();
-    const userId = user?.sub || user?.user_id;
+    const userId = user?.sub;
     const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
     const [selectedTemplate, setSelectedTemplate] = useState("");
