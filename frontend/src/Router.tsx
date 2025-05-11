@@ -1,6 +1,6 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import AuthContext from './contexts/AuthContext';
-import Home from './pages/Home';
+import Landing from './pages/Landing';
 import Edit from './pages/EditMD';
 import Navbar from './components/navbar/Navbar';
 import CreateTemplate from './pages/CreateTemplate';
@@ -15,7 +15,7 @@ function Router() {
           element={
             <AuthContext requireAuth={false}>
               <UnauthBar/>
-              <Home />
+              <Landing />
             </AuthContext>
           } 
         />

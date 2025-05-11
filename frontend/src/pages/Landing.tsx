@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function Home() {
+function Landing() {
   const {loginWithRedirect} = useAuth0();
   const { theme } = useTheme();
 
@@ -60,4 +60,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Landing;
