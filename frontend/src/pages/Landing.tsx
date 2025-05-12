@@ -26,7 +26,7 @@ function Landing() {
   }, [theme]);
     
   return (
-    <div className="absolute z-10 w-full bg-gray-100 dark:bg-neutral-950 py-8">
+    <div className="absolute z-10 w-full bg-gray-100 dark:bg-neutral-950 py-8 p-6 xl-p-0">
       <div className='mt-[6rem] max-w-[240px] mx-auto text-center bg-gray-200 dark:bg-neutral-700 py-1 px-2 rounded-full text-sm text-black dark:text-gray-300 border border-gray-400 dark:border-neutral-500'>
         Markdown Editing for Everyone
       </div>
@@ -34,7 +34,7 @@ function Landing() {
         Modern Solutions for Writing Documentation
       </h1>
       <p className="mx-auto text-center mt-8 max-w-2xl text-balance text-lg text-black dark:text-white">
-        Write beautiful documentation and README files with this markdown editor. Create your templates, use them, and avoid rewriting repetitively.
+        A streamlined interface for writing documentation through the use of templates and fetching README files from your public GitHub repositories.
       </p>
       <div className='flex flex-row justify-center py-10 gap-x-4'>
         <Button className='text-white dark:text-black bg-black dark:bg-white' onClick={handleLogin}>

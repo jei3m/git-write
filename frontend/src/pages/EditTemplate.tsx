@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { useTemplateStore } from '@/store/template.store';
 import { toast } from 'sonner';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
+import MobileScreen from '@/components/custom/MobileScreen';
 
 function EditTemplate() {
     const { theme } = useTheme();
@@ -17,6 +19,7 @@ function EditTemplate() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [isUpdating, setIsUpdating] = useState(false);
+    const isMobile = useIsMobile();
 
     const [template, setTemplate] = useState({
         userId: userId,
@@ -83,56 +86,63 @@ function EditTemplate() {
     }, [theme]);
 
     return (
-        <div className='p-4 max-w-[80%] mx-auto'>
-            <div className='flex flex-row justify-between'>
-                <h1 className="text-3xl font-bold mb-4 text-black dark:text-white">Edit Template</h1>
-                <Input 
-                    type='text' 
-                    value={template.title} 
-                    onChange={(e) => setTemplate({...template, title: e.target.value})} 
-                    placeholder='Template Title' 
-                    className='h-[36px] w-[200px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
-                    required
-                />
-                <div className='flex flex-row gap-4'>
-
-                    <Button type="button" asChild={!isUpdating} disabled={isUpdating} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
-                        <Link to="/home" className='flex items-center gap-x-2'>
-                            <X/>Cancel
-                        </Link>
-                    </Button>
-
-                    {isUpdating ? (
-                        <Button disabled={isUpdating} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
-                            <Loader2 className='animate-spin'/>Updating...
+        <>
+        {!isMobile? (
+            <div className='p-4 max-w-[80%] mx-auto'>
+                <div className='flex flex-row justify-between'>
+                    <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-black dark:text-white">Edit Template</h1>
+                    <Input 
+                        type='text' 
+                        value={template.title} 
+                        onChange={(e) => setTemplate({...template, title: e.target.value})} 
+                        placeholder='Template Title' 
+                        className='h-[36px] w-[160px] lg:w-[200px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
+                        required
+                    />
+                    <div className='flex flex-row gap-4'>
+    
+                        <Button type="button" asChild={!isUpdating} disabled={isUpdating} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+                            <Link to="/home" className='flex items-center gap-x-2'>
+                                <X/>Cancel
+                            </Link>
                         </Button>
-                    ):(
-                        <Button disabled={isUpdating} onClick={handleUpdateTemplate} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
-                            <SaveIcon/>Update
-                        </Button>
-                    )}
+    
+                        {isUpdating ? (
+                            <Button disabled={isUpdating} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+                                <Loader2 className='animate-spin'/>Updating...
+                            </Button>
+                        ):(
+                            <Button disabled={isUpdating} onClick={handleUpdateTemplate} className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'>
+                                <SaveIcon/>Update
+                            </Button>
+                        )}
+                    </div>
                 </div>
+                <MarkdownEditor
+                    value={template.content}
+                    height="78dvh"
+                    className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
+                    onChange={(value) => setTemplate({...template, content: value})}
+                    visible={true}
+                    toolbars={[
+                        'undo',
+                        'redo',
+                        'bold',
+                        'italic',
+                        'header',
+                        'quote',
+                        'olist',
+                        'ulist',
+                        'code',
+                        'link',
+                    ]}
+                />
             </div>
-            <MarkdownEditor
-                value={template.content}
-                height="80dvh"
-                className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
-                onChange={(value) => setTemplate({...template, content: value})}
-                visible={true}
-                toolbars={[
-                    'undo',
-                    'redo',
-                    'bold',
-                    'italic',
-                    'header',
-                    'quote',
-                    'olist',
-                    'ulist',
-                    'code',
-                    'link',
-                ]}
-            />
-        </div>
+        ): (
+            <MobileScreen />
+        )}
+        </>
+
     )
 }
 
