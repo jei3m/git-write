@@ -14,7 +14,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **Download Option**: Export your markdown files locally with a simple download function.
 
-- **User Authentication**: Secure user authentication powered by Auth0, allowing personalized template storage and GitHub account connection.
+- **User Authentication**: Secure user authentication powered by Firebase, allowing personalized template storage and GitHub account connection.
 
 - **Responsive Design**: A clean, modern interface that works well on various screen sizes, built with Tailwind CSS.
 
@@ -28,7 +28,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
 
-- **Auth0**: Authentication and user management service that handles user sign-in and identity.
+- **Firebase Auth**: Authentication and user management service that handles user sign-in and identity.
 
 - **Zustand**: A small, fast, and scalable state-management solution for React applications.
 
@@ -69,10 +69,13 @@ To set up GitWrite locally, follow these steps:
     
     Frontend \`.env\` file:
     \`\`\`dotenv
-    VITE_AUTH_DOMAIN=your_auth0_domain
-    VITE_AUTH_CLIENT_ID=your_auth0_client_id
-    VITE_REDIRECT_URI=your_redirect_uri
     VITE_API_URL=http://localhost:5000
+    VITE_FIREBASE_API_KEY=your_api_key
+    VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+    VITE_FIREBASE_PROJECT_ID=your_project_id
+    VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+    VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+    VITE_FIREBASE_APP_ID=your_app_id
     \`\`\`
     
     Backend \`.env\` file:
