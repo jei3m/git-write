@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useTheme } from '../contexts/ThemeProvider';
-import { CircleXIcon, DownloadIcon } from 'lucide-react';
+import { CircleXIcon, DownloadIcon, GithubIcon } from 'lucide-react';
 import TemplateSelector from '@/components/edit/TemplateSelector';
 import { Button } from '@/components/ui/button';
 import SelectRepos from '@/components/edit/RepoSelector';
@@ -31,12 +31,12 @@ function Edit() {
     element.click();
   }
 
-  const handleClearFeature = () => {
+  const handleClear = () => {
     setSelectedFeature("")
     setMarkdown("")
     setSelectedRepo("")
     setRepoName("")
-    useGithubStore.setState({ readme: "" })
+    useGithubStore.setState({ readme: "", sha: "" })
   }
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function Edit() {
             </div>
           ) :(
             <Button className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
-              onClick={handleClearFeature}
+              onClick={handleClear}
             >
               <CircleXIcon/>
             </Button>
@@ -75,12 +75,22 @@ function Edit() {
             <TemplateSelector setMarkdown={setMarkdown} /> 
           }
 
-          <Button 
-            className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
-            onClick={handleDownload}
-          >
-            <DownloadIcon/>Download
-          </Button>
+          { (selectedFeature === "" || selectedFeature === "templates") &&
+            <Button 
+              className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
+              onClick={handleDownload}
+            >
+              <DownloadIcon/>Download
+            </Button>          
+          }
+
+          {/* {selectedFeature === "repos" && 
+            <Button 
+              className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
+            >
+              <GithubIcon/>Publish
+            </Button>
+          } */}
 
         </div>
       </div>
