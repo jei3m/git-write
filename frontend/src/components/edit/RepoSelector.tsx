@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useGithubStore } from "@/store/github.store";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@/components/ui/button";
 import { CircleX, Search } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -8,12 +7,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
 function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: any) {
-    const { user } = useAuth0();
-    const { repos, fetchRepos, readme, fetchReadme, sha, fetchSHA } = useGithubStore();
+    const { repos, fetchRepos, readme, fetchReadme, sha, fetchSHA, gitUser } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const githubUsername = user?.nickname;
+    const githubUsername = gitUser?.login
 
     const filteredRepos = repos.filter(repo => 
         repo.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -24,11 +22,12 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
         setOpen(false);
         setRepoName(repoName);
         fetchReadme(repoName);
-        // fetchSHA(repoName);
+        fetchSHA(repoName);
     };
 
     const handleClearRepo = () => {
         setSelectedRepo(null);
+        setMarkdown("");
     };
 
     useEffect(() => {

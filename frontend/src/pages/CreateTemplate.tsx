@@ -4,17 +4,17 @@ import { useTheme } from '../contexts/ThemeProvider';
 import { Loader2, SaveIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth0 } from "@auth0/auth0-react";
+import { UserAuth } from '@/contexts/FirebaseContext';
 import { useTemplateStore } from '@/store/template.store';
 import { toast } from 'sonner';
 import { useNavigate, Link } from 'react-router-dom';
 
 function CreateTemplate() {
-    const { user } = useAuth0();
+    const {currentUser} = UserAuth();
     const { theme } = useTheme();
     const { createTemplate } = useTemplateStore();
     const navigate = useNavigate();
-    const userId = user?.sub || user?.user_id;
+    const userId = currentUser.providerData[0].uid;
     const [isCreating, setIsCreating] = useState(false);
     
     const [newTemplate, setNewTemplate] = useState({
@@ -22,7 +22,7 @@ function CreateTemplate() {
         title: "",
         content: "",
     });
-
+    
     const handleSaveTemplate = async () => {
         
         setIsCreating(true);

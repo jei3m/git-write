@@ -2,13 +2,20 @@ import { Button } from "../ui/button";
 import { ToggleMode } from "../navbar/ToggleMode";
 import { FileText } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { UserAuth } from "../../contexts/FirebaseContext";
+import { useNavigate } from "react-router-dom";
 
 function UnauthBar() {
-  const { loginWithRedirect } = useAuth0();
+  const { signInWithGitHub } = UserAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    loginWithRedirect();
+  const handleLogin = async () => {
+    try {
+      await signInWithGitHub();
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
   
   return (
@@ -21,7 +28,11 @@ function UnauthBar() {
 
         <div className="flex flex-row items-center gap-x-2">
         <ToggleMode />
-        <Button size="sm" className="bg-gray-900 dark:bg-white border border-neutral-700 dark:border-gray-300 text-white dark:text-black" onClick={handleLogin}>
+        <Button 
+          size="sm" 
+          className="bg-gray-900 dark:bg-white border border-neutral-700 dark:border-gray-300 text-white dark:text-black" 
+          onClick={handleLogin}
+        >
             Get Started
         </Button>
         </div>
@@ -30,4 +41,4 @@ function UnauthBar() {
   )
 }
 
-export default UnauthBar
+export default UnauthBar;

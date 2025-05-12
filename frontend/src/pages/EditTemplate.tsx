@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import { UserAuth } from '@/contexts/FirebaseContext';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useTheme } from '../contexts/ThemeProvider';
 import { Loader2, SaveIcon, X } from 'lucide-react';
@@ -11,8 +11,8 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 
 function EditTemplate() {
     const { theme } = useTheme();
-    const { user } = useAuth0();
-    const userId = user?.sub || user?.user_id;
+    const {currentUser} = UserAuth();
+    const userId = currentUser.providerData[0].uid;
     const { fetchTemplateById, updateTemplate } = useTemplateStore();
     const navigate = useNavigate();
     const { id } = useParams();

@@ -8,14 +8,10 @@ import {
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { ExternalLink, LogOut, MapPin } from "lucide-react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { UserAuth } from "@/contexts/FirebaseContext";
 
 function ProfileDialog({user}: {user:any}) {
-    const { logout } = useAuth0();
-
-    const handleLogout = () => {
-        logout()
-    };
+    const { logOut } = UserAuth();
 
   return (
     <Dialog>
@@ -29,9 +25,9 @@ function ProfileDialog({user}: {user:any}) {
                 <DialogTitle>
                     <div className="flex gap-3">
                         <img src={user?.avatar_url} alt={user?.name} className="w-20 h-20 rounded-full border dark:border-[#30363d]"/>
-                        <div className="flex flex-col items-start">
+                        <div className="flex flex-col items-start gap-y-1">
                             <span className="text-2xl font-semibold text-gray-900 dark:text-white">{user?.name}</span>
-                            <span className="text-md font-normal text-gray-600 dark:text-gray-400">@{user?.login}</span>
+                            <span className="text-md font-normal text-gray-600 dark:text-gray-400">{user?.login}</span>
                         </div>
                     </div>
                 </DialogTitle>
@@ -51,7 +47,7 @@ function ProfileDialog({user}: {user:any}) {
                     <span className="mt-[1px]">{user?.html_url}</span>
                 </a>
 
-                <Button className="text-md text-red-500 flex items-center" onClick={handleLogout}>
+                <Button className="text-md text-red-500 flex items-center" onClick={logOut}>
                     <LogOut /> Sign Out
                 </Button>
                 

@@ -35,9 +35,9 @@ export const useGithubStore = create<RepoStore>((set) => ({
             return {success: false, message: "Failed to fetch templates"};            
         }
     },
-    fetchUserData: async (githubUsername: string) => {
+    fetchUserData: async (githubUID: string) => {
         try {
-            const { data } = await axios.get(`https://api.github.com/users/${githubUsername}`);
+            const { data } = await axios.get(`https://api.github.com/user/${githubUID}`);
 
             set({gitUser: data});
             return {success: true, message: "User data fetched successfully"};
@@ -57,5 +57,5 @@ export const useGithubStore = create<RepoStore>((set) => ({
         } catch (error) {
             return {success: false, message: "Failed to fetch SHA"};
         }
-    }
+    },
 }));

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth0 } from "@auth0/auth0-react";
+import { UserAuth } from '@/contexts/FirebaseContext';
 import { useTemplateStore } from '@/store/template.store';
 import { Button } from "@/components/ui/button";
 import { CircleX, SquarePen, PlusIcon, Search } from "lucide-react";
@@ -13,8 +13,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
-    const { user } = useAuth0();
-    const userId = user?.sub;
+    const { currentUser } = UserAuth();
+    const userId = currentUser.providerData[0].uid;
     const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
     const [selectedTemplate, setSelectedTemplate] = useState("");

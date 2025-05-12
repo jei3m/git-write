@@ -75,14 +75,12 @@ function Edit() {
             <TemplateSelector setMarkdown={setMarkdown} /> 
           }
 
-          { (selectedFeature === "" || selectedFeature === "templates") &&
-            <Button 
-              className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
-              onClick={handleDownload}
-            >
-              <DownloadIcon/>Download
-            </Button>          
-          }
+          <Button 
+            className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
+            onClick={handleDownload}
+          >
+            <DownloadIcon/>Download
+          </Button>          
 
           {/* {selectedFeature === "repos" && 
             <Button 

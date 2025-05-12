@@ -4,14 +4,21 @@ import MarkdownEditor from '@uiw/react-markdown-editor';
 import { markdown } from '@/utils/markdown';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
+import { UserAuth } from '@/contexts/FirebaseContext';
 
 function Landing() {
-  const {loginWithRedirect} = useAuth0();
+  const { signInWithGitHub } = UserAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    loginWithRedirect();
+  const handleLogin = async () => {
+    try {
+      await signInWithGitHub();
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   useEffect(() => {

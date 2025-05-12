@@ -2,26 +2,27 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToggleMode } from "../navbar/ToggleMode";
 import { FileText } from "lucide-react";
-import { useAuth0 } from "@auth0/auth0-react";
 import ProfileDialog from "../navbar/ProfileDialog";
 import { useGithubStore } from "@/store/github.store";
 import { GithubUser } from "@/types/github.types";
+import { UserAuth } from '@/contexts/FirebaseContext';
 
 function Navbar() {
-  const { user, isAuthenticated } = useAuth0();
   const { gitUser, fetchUserData } = useGithubStore();
   const [githubUser, setGithubUser] = useState<GithubUser | null>(null);
-  const githubUsername = user?.nickname;
+  const { currentUser } = UserAuth();
+  const githubUID = currentUser.providerData[0].uid;
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchUserData(githubUsername);
+    if (currentUser){
+      fetchUserData(githubUID);
     }
-  },[isAuthenticated])
+  },[currentUser])
 
   useEffect(() => {
     if (gitUser) {
       setGithubUser(gitUser);
+      console.log(gitUser); // Log the fetched user data t
     }
   }, [gitUser]);
 
