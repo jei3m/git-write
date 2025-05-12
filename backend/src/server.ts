@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "../config/db";
-import exampleRoutes from "../routes/example.route";
 import templateRoutes from "../routes/template.route";
 import cors from "cors";
 
@@ -18,7 +17,6 @@ app.get("/", (req, res) => {
     res.send('API is Running!')
 });
 
-app.use("/api/examples", exampleRoutes);
 app.use("/api/templates", templateRoutes);
 
 app.listen(PORT, () => {
