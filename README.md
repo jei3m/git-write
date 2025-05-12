@@ -1,6 +1,6 @@
 ﻿# GitWrite
-
-![Screenshot 2025-05-06 092951](https://github.com/user-attachments/assets/b73f65f9-781b-4c11-ac5c-57e44e2074a5)
+ 
+![Screenshot 2025-05-12 215456](https://github.com/user-attachments/assets/7033c098-7357-4156-9e60-456eb39495bd)
 GitWrite provides a streamlined interface for writing documentation through the use of templates and fetching README files from your public GitHub repositories, helping developers create consistent documentation without repetitive work.
 
 ## Features
