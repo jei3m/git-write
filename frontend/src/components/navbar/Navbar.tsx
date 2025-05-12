@@ -22,7 +22,6 @@ function Navbar() {
   useEffect(() => {
     if (gitUser) {
       setGithubUser(gitUser);
-      console.log(gitUser); // Log the fetched user data t
     }
   }, [gitUser]);
 
