@@ -54,8 +54,10 @@ export interface RepoStore {
     repos: Repo[]
     gitUser: GithubUser | null;
     readme: string;
+    sha: string | null;
     setRepos: (repos: any[]) => void;
     fetchRepos: (githubUsername: string) => Promise<RepoResponse>;
     fetchReadme: (full_name: string) => Promise<RepoResponse>;
     fetchUserData: (githubUsername: any) => Promise<RepoResponse>;
+    fetchSHA: (full_name: string) => Promise<RepoResponse>;
 }
