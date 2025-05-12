@@ -1,18 +1,14 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
 import { AuthContextProps } from "../types/auth.types.";
-import Loading from "../components/custom/Loading";
+import { UserAuth } from "./FirebaseContext";
+import { Navigate } from "react-router-dom";
 
 function AuthContext({children, requireAuth}: AuthContextProps) {
-
-    const { isSignedIn, isLoaded } = useAuth();
+    const { currentUser } = UserAuth();
 
     switch (true) {
-        case !isLoaded:
-            return <Loading />;
-        case requireAuth && !isSignedIn:
+        case requireAuth && !currentUser:
             return <Navigate to="/" />;
-        case !requireAuth && isSignedIn:
+        case !requireAuth && currentUser:
             return <Navigate to="/home" />;
         default:
             break;

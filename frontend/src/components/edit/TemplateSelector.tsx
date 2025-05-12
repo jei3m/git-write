@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import { UserAuth } from '@/contexts/FirebaseContext';
 import { useTemplateStore } from '@/store/template.store';
-import { useAuth } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { CircleX, SquarePen, PlusIcon, Search } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
@@ -13,7 +13,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
-    const { userId } = useAuth();
+    const { currentUser } = UserAuth();
+    const userId = currentUser.providerData[0].uid;
     const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
     const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -51,7 +52,6 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
         } else {
             toast.success(message);
         }
-        console.log(success);
     };
 
     const handleUpdateTemplate = (templateId: string) => {
@@ -73,12 +73,12 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
             <PopoverTrigger asChild>
                 <Button 
                     variant="outline" 
-                    className="w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
+                    className="w-[140px] lg:w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    {getSelectedTemplateName()}
+                    <span className='truncate'>{getSelectedTemplateName()}</span>
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
+            <PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
                 <div className="p-2">
                     <div className="flex items-center space-x-2 mb-2">
                         <Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
@@ -86,7 +86,7 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
                             placeholder="Search templates..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-8 flex-1 bg-transparent text-black dark:text-white focus-visible:ring-0"
+                            className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
                         />
                     </div>
                     <ScrollArea className="max-h-[200px]">

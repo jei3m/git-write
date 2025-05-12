@@ -1,6 +1,6 @@
 ﻿# GitWrite
-
-![Screenshot 2025-05-06 092951](https://github.com/user-attachments/assets/b73f65f9-781b-4c11-ac5c-57e44e2074a5)
+ 
+![Screenshot 2025-05-12 215456](https://github.com/user-attachments/assets/7033c098-7357-4156-9e60-456eb39495bd)
 GitWrite provides a streamlined interface for writing documentation through the use of templates and fetching README files from your public GitHub repositories, helping developers create consistent documentation without repetitive work.
 
 ## Features
@@ -15,7 +15,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **Download Option**: Export your markdown files locally with a simple download function.
 
-- **User Authentication**: Secure user authentication powered by Clerk, allowing personalized template storage and GitHub account connection.
+- **User Authentication**: Secure user authentication and protected routes powered by Firebase.
 
 - **Responsive Design**: A clean, modern interface that works well on various screen sizes, built with Tailwind CSS.
 
@@ -29,7 +29,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
 
-- **Clerk**: Authentication and user management service that handles user sign-in and identity.
+- **Firebase Auth**: Authentication and user management service that handles user sign-in and identity.
 
 - **Zustand**: A small, fast, and scalable state-management solution for React applications.
 
@@ -70,8 +70,13 @@ To set up GitWrite locally, follow these steps:
     
     Frontend `.env` file:
     ```dotenv
-    VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
     VITE_API_URL=http://localhost:5000
+    VITE_FIREBASE_API_KEY=your_api_key
+    VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+    VITE_FIREBASE_PROJECT_ID=your_project_id
+    VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+    VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+    VITE_FIREBASE_APP_ID=your_app_id
     ```
     
     Backend `.env` file:

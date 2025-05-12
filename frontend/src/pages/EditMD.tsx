@@ -4,10 +4,12 @@ import { useTheme } from '../contexts/ThemeProvider';
 import { CircleXIcon, DownloadIcon } from 'lucide-react';
 import TemplateSelector from '@/components/edit/TemplateSelector';
 import { Button } from '@/components/ui/button';
-import SelectRepos from '@/components/edit/SelectRepos';
+import SelectRepos from '@/components/edit/RepoSelector';
 import SelectFeature from '@/components/edit/SelectFeature';
-import { useRepoStore } from "@/store/repo.store";
+import { useGithubStore } from "@/store/github.store";
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
+import MobileScreen from '@/components/custom/MobileScreen';
 
 function Edit() {
   const { theme } = useTheme();
@@ -15,6 +17,7 @@ function Edit() {
   const [selectedFeature, setSelectedFeature] = useState("")
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
   const [repoName, setRepoName] = useState("");
+  const isMobile = useIsMobile();
 
   const handleDownload = () => {
 
@@ -31,12 +34,12 @@ function Edit() {
     element.click();
   }
 
-  const handleClearFeature = () => {
+  const handleClear = () => {
     setSelectedFeature("")
     setMarkdown("")
     setSelectedRepo("")
     setRepoName("")
-    useRepoStore.setState({ readme: "" })
+    useGithubStore.setState({ readme: "", sha: "" })
   }
 
   useEffect(() => {
@@ -44,10 +47,11 @@ function Edit() {
   }, [theme]);
 
   return (
-    <div className='min-h-[95dvh] w-full bg-gray-100 dark:bg-neutral-900'>
+    <>
+    {!isMobile? (
       <div className='p-4 max-w-[80%] mx-auto'>
         <div className='flex flex-row justify-between'>
-          <h1 className="text-3xl font-bold mb-4 text-black dark:text-white">Markdown Editor</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-black dark:text-white">Markdown Editor</h1>
           <div className='flex flex-row gap-4'>
 
             {!selectedFeature ? (
@@ -56,7 +60,7 @@ function Edit() {
               </div>
             ) :(
               <Button className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white'
-                onClick={handleClearFeature}
+                onClick={handleClear}
               >
                 <CircleXIcon/>
               </Button>
@@ -81,14 +85,14 @@ function Edit() {
               onClick={handleDownload}
             >
               <DownloadIcon/>Download
-            </Button>
+            </Button>          
 
           </div>
         </div>
         <MarkdownEditor
           value={markdown}
-          height="80dvh"
-          className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
+          height="78dvh"
+          className='min-w-[100%] mx-auto prose-sm md:prose-base prose-invert'
           onChange={(value) => setMarkdown(value)}
           visible={true}
           toolbars={[
@@ -104,7 +108,11 @@ function Edit() {
           ]}
         />
       </div>
-    </div>
+    ): (
+      <MobileScreen />
+    )}
+    </>
+
   )
 }
 

@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { useRepoStore } from "@/store/repo.store";
-import { useUser } from "@clerk/clerk-react";
+import { useGithubStore } from "@/store/github.store";
 import { Button } from "@/components/ui/button";
 import { CircleX, Search } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
-function SelectRepos({selectedRepo, setSelectedRepo, repoName, setRepoName, setMarkdown}: any) {
-    const { repos, fetchRepos, readme, fetchReadme } = useRepoStore();
-    const { user } = useUser();
+function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: any) {
+    const { repos, fetchRepos, readme, fetchReadme, sha, fetchSHA, gitUser } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const githubUsername = user?.externalAccounts.find(
-        (account) => account.provider === "github"
-    )?.username;
+    const githubUsername = gitUser?.login
 
     const filteredRepos = repos.filter(repo => 
         repo.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -26,10 +22,12 @@ function SelectRepos({selectedRepo, setSelectedRepo, repoName, setRepoName, setM
         setOpen(false);
         setRepoName(repoName);
         fetchReadme(repoName);
+        fetchSHA(repoName);
     };
 
     const handleClearRepo = () => {
         setSelectedRepo(null);
+        setMarkdown("");
     };
 
     useEffect(() => {
@@ -44,17 +42,23 @@ function SelectRepos({selectedRepo, setSelectedRepo, repoName, setRepoName, setM
         }
     }, [readme]);
 
+    // useEffect(() => {
+    //     if (sha) {
+    //         console.log(sha);
+    //     }
+    // },[sha])
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button 
                     variant="outline" 
-                    className="w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
+                    className="w-[140px] lg:w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    {selectedRepo || "Select Repository"}
+                    <span className="truncate">{selectedRepo || "Select Repository"}</span>
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[220px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
+            <PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
                 <div className="p-2">
                     <div className="flex items-center space-x-2 mb-2">
                         <Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
@@ -62,7 +66,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, repoName, setRepoName, setM
                             placeholder="Search repositories..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-8 flex-1 bg-transparent text-black dark:text-white focus-visible:ring-0"
+                            className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
                         />
                     </div>
                     <ScrollArea className="h-[200px]">
