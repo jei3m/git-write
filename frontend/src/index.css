@@ -22,3 +22,7 @@ html body[data-scroll-locked] {
 .wmde-markdown p {
   white-space: pre-wrap;
 }
+
+li {
+  list-style-type: disc;
+}
