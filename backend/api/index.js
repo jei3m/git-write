@@ -8,6 +8,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+connectDB();
 
 app.use(cors({origin: process.env.ORIGIN_URL})); // Only allow requests from this origin
 
@@ -20,7 +21,6 @@ app.get("/", (req, res) => {
 app.use("/api/templates", templateRoutes);
 
 app.listen(PORT, () => {
-    connectDB();
     console.log(`Server is running on PORT: ${PORT}`);
 })
 
