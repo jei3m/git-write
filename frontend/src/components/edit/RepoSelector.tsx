@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
 function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: any) {
-    const { repos, fetchRepos, readme, fetchReadme, sha, fetchSHA, gitUser } = useGithubStore();
+    const { repos, fetchRepos, readme, fetchReadme, gitUser } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -22,7 +22,6 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
         setOpen(false);
         setRepoName(repoName);
         fetchReadme(repoName);
-        fetchSHA(repoName);
     };
 
     const handleClearRepo = () => {
@@ -41,12 +40,6 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
             setMarkdown(readme);
         }
     }, [readme]);
-
-    // useEffect(() => {
-    //     if (sha) {
-    //         console.log(sha);
-    //     }
-    // },[sha])
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
