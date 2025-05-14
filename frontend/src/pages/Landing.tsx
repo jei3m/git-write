@@ -50,6 +50,7 @@ function Landing() {
           height="80dvh"
           className='min-w-full mx-auto prose-sm md:prose-base prose-invert'
           visible={true}
+          toolbarsMode={['preview']}
           toolbars={[
             'undo',
             'redo',
