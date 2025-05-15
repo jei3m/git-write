@@ -64,6 +64,8 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
             setSelectedTemplate("");
         } else {
             toast.success(message);
+            setSelectedTemplate("");
+            setMarkdown("");
         }
     };
 
