@@ -33,12 +33,15 @@ function CreateTemplate() {
         switch (true) {
             case !newTemplate.title:
                 toast.error('Please enter a template title');
+                setIsCreating(false);
                 return;
             case newTemplate.title.length > 18:
                 toast.error('Title can only be a maximum of 18 characters');
+                setIsCreating(false);
                 return;
             case !newTemplate.content:
                 toast.error('Your template content is empty.');
+                setIsCreating(false);
                 return;
         }
 
