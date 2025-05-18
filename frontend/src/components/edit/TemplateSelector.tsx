@@ -58,7 +58,7 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     };
 
     const handleDeleteTemplate = async (tid: string) => {
-        const {success, message} = await deleteTemplate(tid);
+        const {success, message} = await deleteTemplate(tid, userId);
         if (!success) {
             toast.error(message);
             setSelectedTemplate("");
