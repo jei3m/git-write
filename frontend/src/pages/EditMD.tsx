@@ -49,7 +49,7 @@ function Edit() {
   return (
     <>
     {!isMobile? (
-      <div className='p-4 max-w-[80%] mx-auto'>
+      <div className='p-4 max-w-[90%] mx-auto'>
         <div className='flex flex-row justify-between'>
           <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-black dark:text-white">Markdown Editor</h1>
           <div className='flex flex-row gap-4'>
@@ -91,7 +91,7 @@ function Edit() {
         </div>
         <MarkdownEditor
           value={markdown}
-          height="78dvh"
+          height="calc(100vh - 180px)"
           className='min-w-[100%] mx-auto prose-sm md:prose-base prose-invert'
           onChange={(value) => setMarkdown(value)}
           visible={true}
