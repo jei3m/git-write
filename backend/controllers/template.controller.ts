@@ -3,8 +3,12 @@ import mongoose from "mongoose";
 import { Request, Response } from "express";
 
 export const createTemplate = async (req: Request, res: Response): Promise<any> => {
-
+    const userId = req.headers['x-user-id'];
     const template = req.body;
+
+    if (!userId) {
+        return res.status(403).json({ success: false, message: "Forbidden" });
+    }
 
     if (!template.userId || !template.title || !template.content) {
         return res.status(404).json({ success: false, message: "All fields are required" });
@@ -21,10 +25,15 @@ export const createTemplate = async (req: Request, res: Response): Promise<any> 
     }
 
 };
-// for a non unique identifier, a.get/ route is utilized (query parameter)
 export const getTemplates = async (req: Request, res: Response): Promise<any> => {
     try {
-        const {userId} = req.query;
+        const headerId = req.headers['x-user-id'];
+        const {userId} = req.params;
+
+        if (headerId!== userId) {
+            return res.status(403).json({ success: false, message: "Forbidden" });
+        }
+
         const filter = userId ? { userId } : {};
         const templates = await Template.find(filter);
         res.status(200).json({ success: true, data: templates });
@@ -33,9 +42,9 @@ export const getTemplates = async (req: Request, res: Response): Promise<any> =>
         res.status(500).json({ success: false, message: "Internal Server Error" })
     }
 };
-// for unique identifier _id, a .get/:id route is utilized
 export const getTemplateById = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
+    const userId = req.headers['x-user-id'];
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ success: false, message: "Invalid Template ID!" });
@@ -46,6 +55,10 @@ export const getTemplateById = async (req: Request, res: Response): Promise<any>
         
         if (!template) {
             return res.status(404).json({ success: false, message: "Template not found" });
+        }
+
+        if (userId !== template.userId) {
+            return res.status(403).json({ success: false, message: "Forbidden" });
         }
         
         res.status(200).json({ success: true, data: template });
