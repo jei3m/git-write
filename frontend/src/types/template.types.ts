@@ -24,8 +24,8 @@ export interface TemplateStore {
     setTemplates: (templates: any[]) => void;
     createTemplate: (newTemplate: NoIDTemplate) => Promise<TemplateResponse>;
     fetchTemplates: (userId?: string) => Promise<TemplateResponse>;
-    fetchTemplateById: (tid: string) => Promise<TemplateResponse>;
-    deleteTemplate: (tid: string) => Promise<TemplateResponse>;
+    fetchTemplateById: (tid: string, userId: string) => Promise<TemplateResponse>;
+    deleteTemplate: (tid: string, userId: string) => Promise<TemplateResponse>;
     updateTemplate: (tid: string, updatedProduct: NoIDTemplate) => Promise<TemplateResponse>;
 }
 
