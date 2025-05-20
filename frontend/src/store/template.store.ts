@@ -27,7 +27,7 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
 
             set((state) => ({templates: [...state.templates, data]}));
             return {success: true, message:"Template created successfully!"};
-            
+        
         } catch (error) {
             return {success: false, message: "Internal Server Error"};
         }
@@ -70,6 +70,22 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
             return {success: false, message: "Failed to fetch template"};
         }
     },
+    updateTemplate: async (tid: string, updatedTemplate: {userId: string; title: string; content: string;}) => {
+        try {
+            const { data } = await axios.put(`${VITE_API_URL}/api/templates/${tid}`, updatedTemplate, {
+                headers: { 'x-secret-key': import.meta.env.VITE_SECRET_KEY }
+            });
+
+            if (!data.success) {
+                return {success: false, message: data.message, data: null};
+            }
+
+            set(state => ({templates: state.templates.map(template => template._id === tid ? data : template)}));
+            return {success: true, message: "Template updated successfully!"};
+        } catch (error) {
+            return {success: false, message: "Failed to update template"};
+        }
+    },
     deleteTemplate: async (tid: string, userId:string) => {
         try {
             const { data } = await axios.delete(`${VITE_API_URL}/api/templates/${tid}`, {
@@ -87,22 +103,6 @@ export const useTemplateStore = create<TemplateStore>((set) => ({
             return {success: true, message: "Template deleted successfully!"};
         } catch (error) {
             return {success: false, message: "Failed to delete template"};
-        }
-    },
-    updateTemplate: async (tid: string, updatedTemplate: {userId: string; title: string; content: string;}) => {
-        try {
-            const { data } = await axios.put(`${VITE_API_URL}/api/templates/${tid}`, updatedTemplate, {
-                headers: { 'x-secret-key': import.meta.env.VITE_SECRET_KEY }
-            });
-
-            if (!data.success) {
-                return {success: false, message: data.message, data: null};
-            }
-
-            set(state => ({templates: state.templates.map(template => template._id === tid ? data : template)}));
-            return {success: true, message: "Template updated successfully!"};
-        } catch (error) {
-            return {success: false, message: "Failed to update template"};
         }
     }
 }));
