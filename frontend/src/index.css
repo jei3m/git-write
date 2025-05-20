@@ -23,6 +23,10 @@ html body[data-scroll-locked] {
   white-space: pre-wrap;
 }
 
-li {
+ul li {
   list-style-type: disc;
+}
+
+ol li {
+  list-style-type: decimal;
 }
