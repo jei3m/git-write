@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserAuth } from '@/contexts/FirebaseContext';
 import { useTemplateStore } from '@/store/template.store';
 import { Button } from "@/components/ui/button";
-import { CircleX, SquarePen, PlusIcon, Search, Loader2 } from "lucide-react";
+import { CircleX, SquarePen, PlusIcon, Search, Loader2, ChevronDown } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
 import { toast } from "sonner";
 import { TemplateSelectorProps } from '@/types/template.types';
@@ -90,7 +90,7 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
                     variant="outline" 
                     className="w-[140px] lg:w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    <span className='truncate'>{getSelectedTemplateName()}</span>
+                    <span className='truncate'>{getSelectedTemplateName()}</span><ChevronDown className="text-gray-400"/>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">

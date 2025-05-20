@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useGithubStore } from "@/store/github.store";
 import { Button } from "@/components/ui/button";
-import { CircleX, Search } from "lucide-react";
+import { ChevronDown, CircleX, Search } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
 function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: any) {
-    const { repos, fetchRepos, readme, fetchReadme, gitUser } = useGithubStore();
+    const { repos, fetchRepos, readme, fetchReadme, gitUser, fetchSHA } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -22,6 +22,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
         setOpen(false);
         setRepoName(repoName);
         fetchReadme(repoName);
+        fetchSHA(repoName);
     };
 
     const handleClearRepo = () => {
@@ -48,7 +49,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
                     variant="outline" 
                     className="w-[140px] lg:w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    <span className="truncate">{selectedRepo || "Select Repository"}</span>
+                    <span className="truncate">{selectedRepo || "Select Repository"}</span> <ChevronDown className="text-gray-400"/>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
