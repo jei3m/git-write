@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import {RepoStore} from "@/types/github.types";
 import axios from "axios";
+import { getGithubToken } from "@/utils/github-token";
+import { fromBase64 } from "@/utils/base64";
 
-const GITWRITE_AUTH_TOKEN = import.meta.env.VITE_GITWRITE_AUTH_TOKEN;
+const githubToken = getGithubToken();
 
 export const useGithubStore = create<RepoStore>((set) => ({
     readme: "",
@@ -26,11 +28,15 @@ export const useGithubStore = create<RepoStore>((set) => ({
     },
     fetchReadme: async (full_name: string) => {
         try {
-            const { data } = await axios.get(`https://raw.githubusercontent.com/${full_name}/main/README.md`);
+            const { data } = await axios.get(`https://api.github.com/repos/${full_name}/contents/README.md`, {
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`,
+                }
+            });
+            const decoded = fromBase64(data.content);
+            set({readme: decoded});
 
-            set({readme: data});
             return {success: true, message: "Readme fetched successfully"};
-            
         } catch (error) {
             return {success: false, message: "Failed to fetch templates"};            
         }
@@ -49,7 +55,7 @@ export const useGithubStore = create<RepoStore>((set) => ({
         try {
             const { data } = await axios.get(`https://api.github.com/repos/${full_name}/contents/README.md`, {
                 headers: {
-                    'Authorization': GITWRITE_AUTH_TOKEN
+                    'Authorization': githubToken
                 }
             })
             set({sha: data.sha});
@@ -58,4 +64,33 @@ export const useGithubStore = create<RepoStore>((set) => ({
             return {success: false, message: "Failed to fetch SHA"};
         }
     },
+    postCommit: async (updateREADME: { full_name: string, sha: string, content: string, message: string }) => {
+        try {
+            if (!updateREADME.sha || !updateREADME.content || !updateREADME.message) {
+                return {success: false, message: "Missing required parameters"};
+            }
+
+            const payload = {
+                message: updateREADME.message,
+                content: updateREADME.content,
+                sha: updateREADME.sha
+            }
+
+            const { data } = await axios.put(`https://api.github.com/repos/${updateREADME.full_name}/contents/README.md`, payload,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${githubToken}`
+                    }
+                }
+            )
+
+            if (!data) {
+                return {success: false, message: "Error in updating README"};
+            }
+            
+            return {success: true, message: "README updated successfully!"};
+        } catch (error) {
+            return {success: false, message: "Error in updating README"};
+        }
+    }
 }));
