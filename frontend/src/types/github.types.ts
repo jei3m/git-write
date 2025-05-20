@@ -35,4 +35,5 @@ export interface RepoStore {
     fetchReadme: (full_name: string) => Promise<RepoResponse>;
     fetchUserData: (githubUID: any) => Promise<RepoResponse>;
     fetchSHA: (full_name: string) => Promise<RepoResponse>;
+    postCommit:(updateREADME: { full_name: string, sha: string, content: string, message: string }) => Promise<RepoResponse>;
 }
