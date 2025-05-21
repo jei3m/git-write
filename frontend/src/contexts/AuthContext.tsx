@@ -1,9 +1,11 @@
 import { AuthContextProps } from "../types/auth.types.";
 import { UserAuth } from "./FirebaseContext";
 import { Navigate } from "react-router-dom";
+import { getGithubToken } from "@/utils/github-token";
 
 function AuthContext({children, requireAuth}: AuthContextProps) {
     const { currentUser, logOut } = UserAuth();
+    const token = getGithubToken();
 
     if (requireAuth && !currentUser) {
         return <Navigate to="/" />;
@@ -11,8 +13,10 @@ function AuthContext({children, requireAuth}: AuthContextProps) {
         return <Navigate to="/home" />;
     }
 
-    if (currentUser?.stsTokenManager.isExpired) {
-        logOut();
+    if (location.pathname != "/") {
+        if (currentUser?.stsTokenManager.isExpired || !token) {
+            logOut();
+        }
     }
 
     return (
