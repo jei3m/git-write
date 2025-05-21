@@ -19,7 +19,7 @@ function UnauthBar() {
   };
   
   return (
-    <nav className="mx-6 xl:mx-auto fixed top-4 left-0 right-0 z-20 mx-auto max-w-7xl flex items-center justify-between py-2 px-6 h-[50px] rounded-xl border border-gray-300 bg-gray-100/90 dark:bg-black/90 dark:border-neutral-700 dark:bg-neutral-950"> 
+    <nav className="mx-6 md:mx-6 xl:mx-auto fixed top-4 left-0 right-0 z-20 mx-auto max-w-7xl flex items-center justify-between py-2 px-6 h-[50px] rounded-xl border border-gray-300 bg-gray-100/90 dark:bg-black/80 dark:border-neutral-700 dark:bg-neutral-950"> 
 
         <Link to="/" className="flex flex-row items-center text-lg font-bold text-black dark:text-white">
             <FileText className="mr-1"/>

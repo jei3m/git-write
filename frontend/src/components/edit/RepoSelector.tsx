@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useGithubStore } from "@/store/github.store";
 import { Button } from "@/components/ui/button";
-import { CircleX, Search } from "lucide-react";
+import { ChevronDown, CircleX, Search } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 
-function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: any) {
-    const { repos, fetchRepos, readme, fetchReadme, sha, fetchSHA, gitUser } = useGithubStore();
+function SelectRepos({selectedRepo, setSelectedRepo, setRepoFullName, setInitialReadme, setMarkdown}: any) {
+    const { repos, fetchRepos, readme, fetchReadme, gitUser, fetchSHA } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -17,17 +17,20 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
         repo.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleSelectRepo = (repoName: string) => {
-        setSelectedRepo(repoName);
+    const handleSelectRepo = (repoName: string, repoTitle: string) => {
+        setSelectedRepo(repoTitle);
         setOpen(false);
-        setRepoName(repoName);
+        setRepoFullName(repoName);
         fetchReadme(repoName);
         fetchSHA(repoName);
     };
 
     const handleClearRepo = () => {
-        setSelectedRepo(null);
-        setMarkdown("");
+        setInitialReadme("")
+        setMarkdown("")
+        setSelectedRepo("")
+        setRepoFullName("")
+        useGithubStore.setState({ readme: "", sha: "" });
     };
 
     useEffect(() => {
@@ -39,14 +42,9 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
     useEffect(() => {
         if (readme) {
             setMarkdown(readme);
+            setInitialReadme(readme);
         }
     }, [readme]);
-
-    // useEffect(() => {
-    //     if (sha) {
-    //         console.log(sha);
-    //     }
-    // },[sha])
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -55,7 +53,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
                     variant="outline" 
                     className="w-[140px] lg:w-[220px] justify-between bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white"
                 >
-                    <span className="truncate">{selectedRepo || "Select Repository"}</span>
+                    <span className="truncate">{selectedRepo || "Select Repository"}</span> <ChevronDown className="text-gray-400"/>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
@@ -76,7 +74,7 @@ function SelectRepos({selectedRepo, setSelectedRepo, setRepoName, setMarkdown}: 
                                     key={repo.id}
                                     variant="ghost"
                                     className="w-full justify-start font-normal"
-                                    onClick={() => handleSelectRepo(repo.full_name)}
+                                    onClick={() => handleSelectRepo(repo.full_name, repo.name)}
                                 >
                                     {repo.name}
                                 </Button>

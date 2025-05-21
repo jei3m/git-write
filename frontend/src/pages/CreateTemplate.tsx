@@ -33,12 +33,15 @@ function CreateTemplate() {
         switch (true) {
             case !newTemplate.title:
                 toast.error('Please enter a template title');
+                setIsCreating(false);
                 return;
             case newTemplate.title.length > 18:
                 toast.error('Title can only be a maximum of 18 characters');
+                setIsCreating(false);
                 return;
             case !newTemplate.content:
                 toast.error('Your template content is empty.');
+                setIsCreating(false);
                 return;
         }
 
@@ -71,7 +74,7 @@ function CreateTemplate() {
     return (
         <>
         {!isMobile? (
-            <div className='p-4 max-w-[80%] mx-auto'>
+            <div className='p-4 max-w-[90%] mx-auto'>
                 <div className='flex flex-row justify-between'>
                     <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-black dark:text-white">Create Template</h1>
                     <Input 
@@ -102,7 +105,7 @@ function CreateTemplate() {
                 </div>
                 <MarkdownEditor
                     value={newTemplate.content}
-                    height="78dvh"
+                    height="calc(100vh - 180px)"
                     className='min-w-[100%] mx-auto prose prose-sm md:prose-base dark:prose-invert'
                     onChange={(value) => setNewTemplate({...newTemplate, content: value})}
                     visible={true}

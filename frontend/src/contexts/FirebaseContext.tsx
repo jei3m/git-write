@@ -9,28 +9,29 @@ import { auth } from '../firebase';
 import Loading from '@/components/custom/Loading';
 import { User } from 'firebase/auth';
 import { AuthContextType } from '@/types/firebase.types';
-
+import { encryptData } from '@/utils/encrypt';
 const AuthContext = createContext<AuthContextType | null>(null);
 
 function AuthProvider({ children }: {children: any}) {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [githubToken, setGithubToken] = useState<string | null>(null);
+    const ENCRYPT_KEY = import.meta.env.VITE_ENCRYPT_KEY;
 
     // Sign in with GitHub
     async function signInWithGitHub() {
         const provider = new GithubAuthProvider()
-        provider.addScope('repo');
-        provider.addScope('repo:status');
-        provider.addScope('repo_deployment'); 
-        provider.addScope('public_repo');     
+        provider.addScope('public_repo');
 
         try {
             const result = await signInWithPopup(auth, provider);
             const credential = GithubAuthProvider.credentialFromResult(result);
+
             const token = credential?.accessToken ?? null;
-            setGithubToken(token); 
             
+            // Encrypt token before storing
+            const encryptedToken = encryptData(token, ENCRYPT_KEY)
+            localStorage.setItem('githubAccessToken', encryptedToken);
+
             const user = result.user;
             setCurrentUser(user);
             
@@ -57,7 +58,6 @@ function AuthProvider({ children }: {children: any}) {
         currentUser,
         signInWithGitHub,
         logOut,
-        githubToken
     };
 
     // Check user authentication state

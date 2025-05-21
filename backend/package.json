@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "ts-node api/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon api/index.ts",
     "vercel-build": "tsc"
   },
   "keywords": [],
