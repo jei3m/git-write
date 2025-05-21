@@ -26,13 +26,11 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
         const loadTemplates = async () => {
             try {
                 const {success, message } = await fetchTemplates(userId);
-                if (!success) {
-                    toast.error(message);
-                }
+                if (!success) throw Error(message);
             } catch (error) {
                 setIsLoading(false);
-                console.error("Error loading templates:", error);
-                toast.error("Error loading templates");
+                console.error("Error fetching templates:", error);
+                toast.error("Error fetching templates");
             } finally {
                 setIsLoading(false);
             }
