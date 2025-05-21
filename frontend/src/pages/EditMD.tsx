@@ -19,7 +19,8 @@ function Edit() {
   const [isCommit, setIsCommit] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState("")
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
-  const [repoName, setRepoName] = useState("");
+  const [initialReadme, setInitialReadme] = useState("");
+  const [repoFullName, setRepoFullName] = useState("");
   const isMobile = useIsMobile();
   const { sha, postCommit, fetchSHA } = useGithubStore();
   const githubToken = getGithubToken();
@@ -45,32 +46,43 @@ function Edit() {
   }
 
   const handleCommit = async () => {
+    if (initialReadme === markdown) {
+      toast.error('Make changes first to commit.');
+      return;
+    }
+    
     setIsCommit(true);
     const { success, message } = await postCommit(commit);
     try {
-      setCommit({
-        full_name: "",
-        sha: "",
-        content: "",
-        message: "",
-      })
+      if (success) {
+        setCommit({
+          full_name: "",
+          sha: "",
+          content: "",
+          message: "",
+        });
+        toast.success(message);
+      } else {
+        throw Error(message);
+      }
+      
     } catch (error) {
-      if(!success) toast.error(message);
       toast.error(message);
       setCommit({...commit});
       setIsCommit(false);
     } finally {
-      toast.success(message);
       setIsCommit(false);
-      fetchSHA(repoName);
+      fetchSHA(repoFullName);
+      setInitialReadme(markdown);
     }
   }
 
   const handleClear = () => {
     setSelectedFeature("")
+    setInitialReadme("")
     setMarkdown("")
     setSelectedRepo("")
-    setRepoName("")
+    setRepoFullName("")
     useGithubStore.setState({ readme: "", sha: "" })
     setCommit({
       full_name: "",
@@ -84,10 +96,10 @@ function Edit() {
     if (selectedRepo) {
       const base64Markdown = toBase64(markdown);
       setCommit({
-        full_name: selectedRepo,
+        full_name: repoFullName,
         sha: sha || "",
         content: base64Markdown,
-        message: "Update README.md"
+        message: "docs: Update README.md"
       })
     }
   },[selectedRepo, markdown, sha])
@@ -120,8 +132,8 @@ function Edit() {
               <SelectRepos 
                 selectedRepo={selectedRepo}
                 setSelectedRepo={setSelectedRepo}
-                repoName={repoName}
-                setRepoName={setRepoName}
+                setRepoFullName={setRepoFullName}
+                setInitialReadme={setInitialReadme}
                 setMarkdown={setMarkdown}
                 setCommit={setCommit}
               />
@@ -144,7 +156,7 @@ function Edit() {
               <Button 
                 className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
                 onClick={handleCommit}
-                disabled={isCommit || !githubToken || !selectedRepo}
+                disabled={isCommit || !githubToken || !selectedRepo }
               >
                 {!isCommit ? (
                   <><GithubIcon/>Commit</>
