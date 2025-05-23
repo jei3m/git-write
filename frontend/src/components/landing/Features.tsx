@@ -16,12 +16,12 @@ function Features() {
     },
     {
       title: 'README Fetching',
-      description: 'Seamlessly import and edit README files from your GitHub repositories. Keep your documentation in sync with your codebase.',
+      description: 'Seamlessly import and edit README files from your public GitHub repositories. No more manual copy-pasting and manual formatting.',
       icon: Github
     },
     {
       title: 'GitHub Commits',
-      description: 'Push your documentation changes directly to your repositories with integrated GitHub support.',
+      description: 'Directly commit your changes to your selected GitHub repository. Keep your documentation up-to-date and in sync with our platform.',
       icon: GitPullRequest
     }
   ]
