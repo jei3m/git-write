@@ -8,10 +8,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { TrashIcon } from "lucide-react"
-import { DeleteTemplateProps } from "@/types/template.types"
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { TrashIcon } from "lucide-react";
+import { DeleteTemplateProps } from "@/types/component.types";
 
 function DeleteDialog({handleDeleteTemplate, template}: DeleteTemplateProps) {
   return (
