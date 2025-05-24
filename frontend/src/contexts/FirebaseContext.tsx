@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import {
+    User,
     GithubAuthProvider,
     onAuthStateChanged,
     signInWithPopup,
@@ -7,25 +9,23 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase';
 import Loading from '@/components/custom/Loading';
-import { User } from 'firebase/auth';
-import { AuthContextType } from '@/types/firebase.types';
+import { AuthContextType, GitHubSignInResponse } from '@/types/firebase.types';
 import { encryptData } from '@/utils/encrypt';
 const AuthContext = createContext<AuthContextType | null>(null);
 
-function AuthProvider({ children }: {children: any}) {
+function AuthProvider({ children }: {children: ReactNode}) {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const ENCRYPT_KEY = import.meta.env.VITE_ENCRYPT_KEY;
 
     // Sign in with GitHub
-    async function signInWithGitHub() {
+    async function signInWithGitHub(): Promise<GitHubSignInResponse> {
         const provider = new GithubAuthProvider()
         provider.addScope('public_repo');
 
         try {
             const result = await signInWithPopup(auth, provider);
             const credential = GithubAuthProvider.credentialFromResult(result);
-
             const token = credential?.accessToken ?? null;
             
             // Encrypt token before storing
@@ -36,7 +36,7 @@ function AuthProvider({ children }: {children: any}) {
             setCurrentUser(user);
             
             return { user, token };
-        } catch (error:any) {
+        } catch (error: any) {
             console.error('Error signing in with GitHub:', error);
             // Handle errors
             const errorCode = error.code;
