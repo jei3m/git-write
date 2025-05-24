@@ -11,7 +11,7 @@ import { ExternalLink, LogOut, MapPin } from "lucide-react";
 import { UserAuth } from "@/contexts/FirebaseContext";
 import {GithubUser} from "@/types/github.types";
 
-function ProfileDialog({user}: {user:GithubUser}) {
+function ProfileDialog({user}: {user:GithubUser | null}) {
     const { logOut } = UserAuth();
 
     return (

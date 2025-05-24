@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CircleX, SquarePen, PlusIcon, Search, Loader2, ChevronDown } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
 import { toast } from "sonner";
-import { TemplateSelectorProps } from '@/types/template.types';
+import { TemplateSelectorProps } from '@/types/component.types';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

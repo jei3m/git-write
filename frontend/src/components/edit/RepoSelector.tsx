@@ -5,8 +5,10 @@ import { ChevronDown, CircleX, Search } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { SelectRepoProps } from "@/types/component.types";
 
-function SelectRepos({selectedRepo, setSelectedRepo, setRepoFullName, setInitialReadme, setMarkdown}: any) {
+
+function SelectRepos({selectedRepo, setSelectedRepo, setRepoFullName, setInitialReadme, setMarkdown}: SelectRepoProps) {
     const { repos, fetchRepos, readme, fetchReadme, gitUser, fetchSHA } = useGithubStore();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
