@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     const { currentUser } = UserAuth();
-    const userId = currentUser.providerData[0].uid;
+    const userId = currentUser?.providerData[0].uid;
     const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
     const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -56,7 +56,7 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     };
 
     const handleDeleteTemplate = async (tid: string) => {
-        const {success, message} = await deleteTemplate(tid, userId);
+        const {success, message} = await deleteTemplate(tid, userId || '');
         if (!success) {
             toast.error(message);
             setSelectedTemplate("");
