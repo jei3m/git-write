@@ -11,7 +11,7 @@ function Navbar() {
   const { gitUser, fetchUserData } = useGithubStore();
   const [githubUser, setGithubUser] = useState<GithubUser | null>(null);
   const { currentUser } = UserAuth();
-  const githubUID = currentUser.providerData[0].uid;
+  const githubUID = currentUser?.providerData[0].uid;
 
   useEffect(() => {
     if (currentUser){

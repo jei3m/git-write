@@ -14,7 +14,7 @@ import MobileScreen from '@/components/custom/MobileScreen';
 function EditTemplate() {
     const { theme } = useTheme();
     const {currentUser} = UserAuth();
-    const userId = currentUser.providerData[0].uid;
+    const userId = currentUser?.providerData[0].uid;
     const { fetchTemplateById, updateTemplate } = useTemplateStore();
     const navigate = useNavigate();
     const { id } = useParams();
@@ -30,7 +30,7 @@ function EditTemplate() {
     useEffect(() => {
         const getTemplate = async () => {
             if (id) {
-                const response = await fetchTemplateById(id, userId);
+                const response = await fetchTemplateById(id as string, userId as string);
                 if (response.success && response.data) {
                     setTemplate({
                         userId: response.data.userId,
