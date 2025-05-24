@@ -16,7 +16,7 @@ function CreateTemplate() {
     const { theme } = useTheme();
     const { createTemplate } = useTemplateStore();
     const navigate = useNavigate();
-    const userId = currentUser.providerData[0].uid;
+    const userId = currentUser?.providerData[0].uid;
     const [isCreating, setIsCreating] = useState(false);
     const isMobile = useIsMobile();
     

@@ -1,9 +1,17 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface SelectRepoProps {
-    selectedRepo: string;
+    selectedRepo: string | null;
     setSelectedRepo: (repoTitle: string) => void;
     setRepoFullName: (repoName: string) => void;
     setInitialReadme: (readme: string) => void;
     setMarkdown: (readme: string) => void;
+    setCommit: Dispatch<SetStateAction<{
+        full_name: string;
+        sha: string;
+        content: string;
+        message: string;
+    }>>;
 }
 
 export interface SelectFeatureProps {
@@ -17,5 +25,5 @@ export interface TemplateSelectorProps {
 
 export interface DeleteTemplateProps {
     handleDeleteTemplate: (id: string) => void;
-    template: {};
+    template: {_id: string};
 }

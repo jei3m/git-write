@@ -14,7 +14,7 @@ function AuthContext({children, requireAuth}: AuthContextProps) {
     }
 
     if (location.pathname != "/") {
-        if (currentUser?.stsTokenManager.isExpired || !token) {
+        if ((currentUser as any)?.stsTokenManager.isExpired || !token) {
             logOut();
         }
     }
