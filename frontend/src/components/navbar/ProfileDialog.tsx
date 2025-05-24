@@ -9,8 +9,9 @@ import {
 import { Button } from "../ui/button";
 import { ExternalLink, LogOut, MapPin } from "lucide-react";
 import { UserAuth } from "@/contexts/FirebaseContext";
+import {GithubUser} from "@/types/github.types";
 
-function ProfileDialog({user}: {user:any}) {
+function ProfileDialog({user}: {user:GithubUser | null}) {
     const { logOut } = UserAuth();
 
     return (
@@ -55,4 +56,4 @@ function ProfileDialog({user}: {user:any}) {
     )
 }
 
-export default ProfileDialog
+export default ProfileDialog;

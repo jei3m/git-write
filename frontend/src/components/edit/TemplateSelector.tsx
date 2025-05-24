@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CircleX, SquarePen, PlusIcon, Search, Loader2, ChevronDown } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
 import { toast } from "sonner";
-import { TemplateSelectorProps } from '@/types/template.types';
+import { TemplateSelectorProps } from '@/types/component.types';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     const { currentUser } = UserAuth();
-    const userId = currentUser.providerData[0].uid;
+    const userId = currentUser?.providerData[0].uid;
     const navigate = useNavigate();
     const { templates, fetchTemplates, deleteTemplate } = useTemplateStore();
     const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -56,7 +56,7 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     };
 
     const handleDeleteTemplate = async (tid: string) => {
-        const {success, message} = await deleteTemplate(tid, userId);
+        const {success, message} = await deleteTemplate(tid, userId || '');
         if (!success) {
             toast.error(message);
             setSelectedTemplate("");

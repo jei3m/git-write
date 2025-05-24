@@ -6,8 +6,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { SelectFeatureProps } from "@/types/component.types";
 
-function SelectFeature({setSelectedFeature, selectedFeature}: any) {
+function SelectFeature({setSelectedFeature, selectedFeature}: SelectFeatureProps) {
 
     const handleSelectTemplate = (value: string) => {
         setSelectedFeature(value);
