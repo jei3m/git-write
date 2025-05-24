@@ -28,12 +28,3 @@ export interface TemplateStore {
     deleteTemplate: (tid: string, userId: string) => Promise<TemplateResponse>;
     updateTemplate: (tid: string, updatedProduct: NoIDTemplate) => Promise<TemplateResponse>;
 }
-
-export interface TemplateSelectorProps {
-    setMarkdown: (value: string) => void;
-}
-
-export interface DeleteTemplateProps {
-    handleDeleteTemplate: (id: string) => void;
-    template: any;
-}
