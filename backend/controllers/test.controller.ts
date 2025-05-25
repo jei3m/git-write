@@ -1,7 +1,7 @@
 import Test from "../models/test.model";
 import { Request, Response } from "express";
 
-export const getTests = async (req: Request, res: Response): Promise<any> => {
+export const getTests = async (req: Request, res: Response): Promise<void> => {
     try {
         const tests = await Test.find({});
         res.status(200).json({ success: true, data: tests});
