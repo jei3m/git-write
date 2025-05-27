@@ -25,6 +25,7 @@ export const createTemplate = async (req: Request, res: Response): Promise<void>
     }
 
 };
+
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {
     try {
         const headerId = req.headers['x-user-id'];
@@ -42,6 +43,7 @@ export const getTemplates = async (req: Request, res: Response): Promise<void> =
         res.status(500).json({ success: false, message: "Internal Server Error" })
     }
 };
+
 export const getTemplateById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const userId = req.headers['x-user-id'];
