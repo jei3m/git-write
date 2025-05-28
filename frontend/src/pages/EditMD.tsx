@@ -53,6 +53,7 @@ function Edit() {
     
     setIsCommit(true);
     const { success, message } = await postCommit(commit);
+
     try {
       if (success) {
         setCommit({
@@ -62,6 +63,8 @@ function Edit() {
           message: "",
         });
         toast.success(message);
+        fetchSHA(repoFullName);
+        setInitialReadme(markdown);
       } else {
         throw Error(message);
       }
@@ -72,8 +75,6 @@ function Edit() {
       setIsCommit(false);
     } finally {
       setIsCommit(false);
-      fetchSHA(repoFullName);
-      setInitialReadme(markdown);
     }
   }
 
