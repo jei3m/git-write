@@ -15,13 +15,9 @@ export const useGithubStore = create<RepoStore>((set) => ({
     fetchRepos: async (githubUsername?: string) => {
         try {
             const { data} = await axios.get(`https://api.github.com/users/${githubUsername}/repos`)
-
-            if (Array.isArray(data)) {
-                set({repos: data});
-                return {success: true, message: "Repositories fetched successfully"};
-            } 
-
-            return {success: false,  message: "Unexpected response format"};
+            set({repos: data});
+            
+            return {success: true, message: "Repositories fetched successfully"};
         } catch (error) {
             return {success: false, message: "Failed to fetch templates"};            
         }
@@ -67,7 +63,7 @@ export const useGithubStore = create<RepoStore>((set) => ({
     postCommit: async (updateREADME: { full_name: string, sha: string, content: string, message: string }) => {
         try {
             if (!updateREADME.sha || !updateREADME.content || !updateREADME.message) {
-                return {success: false, message: "Missing required parameters"};
+                throw new Error("Missing required parameters");
             }
 
             const payload = {
@@ -77,19 +73,16 @@ export const useGithubStore = create<RepoStore>((set) => ({
             }
 
             const { data } = await axios.put(`https://api.github.com/repos/${updateREADME.full_name}/contents/README.md`, payload,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${githubToken}`
-                    }
-                }
+                { headers: {
+                    'Authorization': `Bearer ${githubToken}`
+                }}
             )
 
-            if (!data) {
-                return {success: false, message: "Error in updating README"};
-            }
-            
+            if (!data) throw new Error("Failed to update README");
             return {success: true, message: "README updated successfully!"};
-        } catch (error) {
+
+        } catch (error: unknown) {
+            if (error instanceof Error) return {success: false, message: error.message};
             return {success: false, message: "Error in updating README"};
         }
     }
