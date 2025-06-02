@@ -39,7 +39,7 @@ GitWrite provides a streamlined interface for writing documentation through the 
 
 - **MongoDB**: A NoSQL database used to store user templates and other application data.
 
-- **GitHub API**: Used to fetch repositories and README files from users' GitHub accounts.
+- **GitHub API**: Used to fetch repositories and update README files from users' GitHub accounts.
 
 ## Installation
 
