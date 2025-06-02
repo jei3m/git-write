@@ -1,6 +1,5 @@
 import express from "express";
 import { createTemplate, getTemplates, getTemplateById, updateTemplate, deleteTemplate } from "../controllers/template.controller";
-import { secretKeyMiddleware } from "../middleware/secret-key.middleware";
 
 const router = express.Router();
 
