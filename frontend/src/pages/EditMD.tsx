@@ -136,7 +136,6 @@ function Edit() {
                 setRepoFullName={setRepoFullName}
                 setInitialReadme={setInitialReadme}
                 setMarkdown={setMarkdown}
-                setCommit={setCommit}
               />
             }
 
