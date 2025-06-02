@@ -111,4 +111,4 @@ To set up GitWrite locally, follow these steps:
 
 - **Downloading README Files**: Click the download button to save your markdown file locally.
 
-- **Publishing to GitHub**: When working with a repository, use the publish button to update the README directly on GitHub (a feature still in development).
+- **Publishing to GitHub**: When working with a repository, use the publish button to update the README directly on GitHub.
