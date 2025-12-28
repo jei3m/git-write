@@ -1,7 +1,7 @@
 import {useState, useEffect, useMemo} from 'react'
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useTheme } from '../contexts/ThemeProvider';
-import { CircleXIcon, DownloadIcon, GithubIcon, Loader2 } from 'lucide-react';
+import { CircleXIcon, DownloadIcon } from 'lucide-react';
 import TemplateSelector from '@/components/edit/TemplateSelector';
 import { Button } from '@/components/ui/button';
 import SelectRepos from '@/components/edit/RepoSelector';
@@ -12,11 +12,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import MobileScreen from '@/components/custom/MobileScreen';
 import { getGithubToken } from '@/utils/github-token';
 import { toBase64 } from '@/utils/base64';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
+import { CommitState } from '@/types/component.types';
+import CommitDialog from '@/components/edit/CommitDialog';
 
 function Edit() {
   const { theme } = useTheme();
@@ -34,7 +31,7 @@ function Edit() {
     repoFullName 
   } = useGithubStore();
   const githubToken = getGithubToken();
-  const [commit, setCommit] = useState({
+  const [commit, setCommit] = useState<CommitState>({
     full_name: "",
     sha: "",
     content: "",
@@ -55,7 +52,7 @@ function Edit() {
     element.download = 'README.md';
     document.body.appendChild(element);
     element.click();
-  }
+  };
 
   const handleCommit = async () => {
     if (initialReadme === markdown) {
@@ -90,7 +87,7 @@ function Edit() {
     } finally {
       setIsCommit(false);
     }
-  }
+  };
 
   const handleClear = () => {
     setSelectedFeature("")
@@ -120,7 +117,7 @@ function Edit() {
         full_name: repoFullName,
         sha: sha || "",
         content: base64Markdown,
-        message: "",
+        message: "docs: update README.md",
         description: "",
         branch: selectedBranch
       })
@@ -182,85 +179,13 @@ function Edit() {
               }
 
               {selectedFeature === "repos" &&
-                <>
-                  <AlertDialog>
-                    {!isCommitDisabled ? (
-                      <AlertDialogTrigger>
-                        <Button 
-                          className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
-                          disabled={isCommitDisabled}
-                        >
-                          <GithubIcon/>Commit
-                        </Button>
-                      </AlertDialogTrigger>                      
-                    ):(
-                      <Button 
-                        className='h-[36px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-neutral-700 text-black dark:text-white' 
-                        disabled={isCommitDisabled}
-                      >
-                        {!isCommit ? (
-                          <><GithubIcon/>Commit</>
-                        ):(
-                          <><Loader2 className='animate-spin'/> Committing...</>
-                        )}
-                      </Button>
-                    )}
-                    <AlertDialogContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700 text-black dark:text-white">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle className="text-black dark:text-white flex justify-between">
-                          Commit Changes
-                        </AlertDialogTitle>
-                      </AlertDialogHeader>
-                      <Separator className='bg-gray-300 dark:bg-neutral-700 -mt-2'/>
-                      <AlertDialogDescription className="text-black dark:text-white space-y-4">
-                        <div className='space-y-3'>
-                          <Label>
-                            Commit Message
-                          </Label>
-                          <Input
-                            type="text" 
-                            placeholder="docs: update README.md"
-                            onChange={(e) => {
-                              setCommit({
-                                ...commit,
-                                message: e.target.value,
-                              })
-                            }}
-                            className='border-gray-300 dark:border-neutral-700'
-                          />                          
-                        </div>
-                        <div className='space-y-3'>
-                          <Label>
-                            Extended Description
-                          </Label>
-                          <Textarea
-                            placeholder="Description..."
-                            onChange={(e) => {
-                              setCommit({
-                                ...commit,
-                                description: e.target.value,
-                              })
-                            }}
-                            className='border-gray-300 dark:border-neutral-700'
-                          />                          
-                        </div>
-                      </AlertDialogDescription>
-                      <AlertDialogFooter className="w-full flex justify-between">
-                        <AlertDialogCancel
-                          className="text-black dark:text-white border-gray-300 dark:border-neutral-700"
-                        >
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          className="bg-green-500 text-white border border-gray-400"
-                          onClick={handleCommit}
-                        >
-                          Commit
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>	               
-                </>
+                <CommitDialog
+                  isCommitDisabled={isCommitDisabled}
+                  isCommit={isCommit}
+                  setCommit={setCommit}
+                  commit={commit}
+                  handleCommit={handleCommit}
+                />
               }
             </div>
           </div>
