@@ -11,20 +11,39 @@ export const useGithubStore = create<RepoStore>((set) => ({
     repos: [],
     gitUser: null,
     sha: null,
+    branches: [],
+    selectedBranch: "",
+    repoFullName: "",
     setRepos: (repos) => set({repos}),
+    setSelectedBranch: (branch: string) => set({selectedBranch: branch}),
     fetchRepos: async (githubUsername?: string) => {
         try {
             const { data} = await axios.get(`https://api.github.com/users/${githubUsername}/repos`)
             set({repos: data});
-            
             return {success: true, message: "Repositories fetched successfully"};
         } catch (error) {
-            return {success: false, message: "Failed to fetch templates"};            
+            return {success: false, message: "Failed to fetch templates"};
         }
     },
-    fetchReadme: async (full_name: string) => {
+    fetchBranches: async (full_name: string) => {
         try {
-            const { data } = await axios.get(`https://api.github.com/repos/${full_name}/contents/README.md`, {
+            const { data } = await axios.get(`https://api.github.com/repos/${full_name}/branches`, {
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`,
+                }
+            });
+            set({branches: data});
+
+            return {success: true, message: "Branches fetched successfully", branches: data};
+        } catch (error) {
+            console.error("Error fetching branches:", error);
+            return {success: false, message: "Failed to fetch branches"};
+        }
+    },
+    fetchReadme: async (full_name: string, branch?: string) => {
+        try {
+            const branchParam = branch ? `?ref=${branch}` : '';
+            const { data } = await axios.get(`https://api.github.com/repos/${full_name}/contents/README.md${branchParam}`, {
                 headers: {
                     'Authorization': `Bearer ${githubToken}`,
                 }
@@ -34,7 +53,7 @@ export const useGithubStore = create<RepoStore>((set) => ({
 
             return {success: true, message: "Readme fetched successfully"};
         } catch (error) {
-            return {success: false, message: "Failed to fetch templates"};            
+            return {success: false, message: "Failed to fetch templates"};
         }
     },
     fetchUserData: async (githubUID: string) => {
@@ -47,9 +66,9 @@ export const useGithubStore = create<RepoStore>((set) => ({
             return {success: false, message: "Failed to fetch user data"};
         }
     },
-    fetchSHA: async (full_name: string) => {
+    fetchSHA: async (full_name: string, branch: string) => {
         try {
-            const { data } = await axios.get(`https://api.github.com/repos/${full_name}/contents/README.md`, {
+            const { data } = await axios.get(`https://api.github.com/repos/${full_name}/contents/README.md?ref=${branch}`, {
                 headers: {
                     'Authorization': githubToken
                 }
@@ -60,23 +79,40 @@ export const useGithubStore = create<RepoStore>((set) => ({
             return {success: false, message: "Failed to fetch SHA"};
         }
     },
-    postCommit: async (updateREADME: { full_name: string, sha: string, content: string, message: string }) => {
+    postCommit: async (updateREADME: { 
+            full_name: string, 
+            sha: string, 
+            content: string, 
+            message: string, 
+            description?: string,
+            branch: string,
+        }
+    ) => {
         try {
-            if (!updateREADME.sha || !updateREADME.content || !updateREADME.message) {
+            if (!updateREADME.sha || !updateREADME.content) {
                 throw new Error("Missing required parameters");
-            }
+            };
 
-            const payload = {
-                message: updateREADME.message,
+            if (!updateREADME.message) {
+                throw new Error("Commit message is required");
+            };
+
+            const commitMessage = updateREADME.description 
+                ? `${updateREADME.message}\n\n${updateREADME.description}`
+                : updateREADME.message;
+
+            const payload: any = {
+                message: commitMessage,
                 content: updateREADME.content,
-                sha: updateREADME.sha
-            }
+                sha: updateREADME.sha,
+                branch: updateREADME.branch
+            };
 
             const { data } = await axios.put(`https://api.github.com/repos/${updateREADME.full_name}/contents/README.md`, payload,
                 { headers: {
                     'Authorization': `Bearer ${githubToken}`
                 }}
-            )
+            );
 
             if (!data) throw new Error("Failed to update README");
             return {success: true, message: "README updated successfully!"};
@@ -84,6 +120,6 @@ export const useGithubStore = create<RepoStore>((set) => ({
         } catch (error: unknown) {
             if (error instanceof Error) return {success: false, message: error.message};
             return {success: false, message: "Error in updating README"};
-        }
+        };
     }
 }));
