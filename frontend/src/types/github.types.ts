@@ -4,6 +4,15 @@ export interface Repo {
     full_name: string;
 }
 
+export interface Branch {
+    name: string;
+    commit: {
+        sha: string;
+        url: string;
+    };
+    protected?: boolean;
+}
+
 export interface Readme {
     readme: string;
     full_name: string;
@@ -30,10 +39,23 @@ export interface RepoStore {
     gitUser: GithubUser | null;
     readme: string;
     sha: string | null;
+    branches: Branch[];
+    selectedBranch: string;
+    repoFullName: string;
     setRepos: (repos: any[]) => void;
+    setSelectedBranch: (branch: string) => void;
     fetchRepos: (githubUsername: string) => Promise<RepoResponse>;
-    fetchReadme: (full_name: string) => Promise<RepoResponse>;
+    fetchBranches: (full_name: string) => Promise<RepoResponse & { branches?: Branch[] }>;
+    fetchReadme: (full_name: string, branch?: string) => Promise<RepoResponse>;
     fetchUserData: (githubUID: any) => Promise<RepoResponse>;
-    fetchSHA: (full_name: string) => Promise<RepoResponse>;
-    postCommit:(updateREADME: { full_name: string, sha: string, content: string, message: string }) => Promise<RepoResponse>;
+    fetchSHA: (full_name: string, branch: string) => Promise<RepoResponse>;
+    postCommit:(
+        updateREADME: { 
+            full_name: string, 
+            sha: string, 
+            content: string, 
+            message: string, 
+            branch: string 
+        }
+    ) => Promise<RepoResponse>;
 }
