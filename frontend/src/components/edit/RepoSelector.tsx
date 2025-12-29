@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { SelectRepoProps } from "@/types/component.types";
 import TemplateSelector from "./TemplateSelector";
 import { toast } from "sonner";
+import PopoverLoader from "../custom/PopoverLoader";
 
 function SelectRepos({
   selectedRepo,
@@ -44,7 +45,8 @@ function SelectRepos({
   const [branchSelectOpen, setBranchSelectOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [branchSearchQuery, setBranchSearchQuery] = useState("");
-  const [isFetching, setIsFetching] = useState(false);
+  const [isBranchesLoading, setisBranchesLoading] = useState(false);
+  const [isReposLoading, setIsReposLoading] = useState(false);
   const [isNoReadMeDialogOpen, setIsNoReadMeDialogOpen] = useState(false);
 
   const githubUsername = gitUser?.login;
@@ -58,19 +60,22 @@ function SelectRepos({
   );
 
   const handleSelectRepo = async (repoName: string, repoTitle: string) => {
-    setIsFetching(true);
+    setisBranchesLoading(true);
     try {
       setSelectedRepo(repoTitle);
       setRepoSelectOpen(false);
       useGithubStore.setState({
-        repoFullName: repoName
+        repoFullName: repoName,
+				selectedBranch: "",
+				readme: "",
 			});
+			setMarkdown("");
     	fetchBranches(repoName);
     } catch (error: unknown) {
       if (error instanceof Error) console.error(`Error: ${error.message}`);
       console.error("An unknown error has occured");
     } finally {
-      setIsFetching(false);
+      setisBranchesLoading(false);
     }
   };
 
@@ -115,20 +120,38 @@ function SelectRepos({
   };
 
   useEffect(() => {
-    if (githubUsername) {
-      fetchRepos(githubUsername);
-    }
+    if (!githubUsername) return;
+		setIsReposLoading(true);
+		const loadRepos = async() => {
+			try {
+				const { 
+					success,
+					message 
+				} = await fetchRepos(githubUsername);
+				if (!success) throw new Error(message);
+ 			} catch (error) {
+				console.error("Error fetching repositories:", error);
+				if (error instanceof Error) {
+					toast.error(error.message);
+				} else {
+					toast.error("Error fetching repositories:");
+				}
+			} finally {
+				setIsReposLoading(false);
+			};
+		};
+		loadRepos();
   }, [githubUsername, fetchRepos]);
 
   useEffect(() => {
     if (selectedRepo && selectedBranch) {
       setMarkdown(readme);
       setInitialReadme(readme);
-      if (!readme && !isFetching) {
+      if (!readme && !isBranchesLoading) {
         setIsNoReadMeDialogOpen(true);
-      }
+      };
     }
-  }, [readme, selectedRepo, isFetching]);
+  }, [readme, selectedRepo, isBranchesLoading]);
 
   return (
     <div className="flex space-x-4">
@@ -147,40 +170,44 @@ function SelectRepos({
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
-						<div className="p-2">
-							<div className="flex items-center space-x-2 mb-2">
-								<Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-								<Input
-									placeholder="Search repositories..."
-									value={searchQuery}
-									onChange={(e) => setSearchQuery(e.target.value)}
-									className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
-								/>
-							</div>
-							<ScrollArea className="h-[200px]">
-								<div className="space-y-1 text-black dark:text-white">
-									{filteredRepos.map((repo) => (
-										<Button
-											key={repo.id}
-											variant="ghost"
-											className="w-full justify-start font-normal"
-											onClick={() => handleSelectRepo(repo.full_name, repo.name)}
-										>
-											{repo.name}
-										</Button>
-									))}
+						{isReposLoading ? (
+							<PopoverLoader />
+						):(
+							<div className="p-2">
+								<div className="flex items-center space-x-2 mb-2">
+									<Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+									<Input
+										placeholder="Search repositories..."
+										value={searchQuery}
+										onChange={(e) => setSearchQuery(e.target.value)}
+										className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
+									/>
 								</div>
-							</ScrollArea>
-							{selectedRepo && (
-								<Button
-									className="w-full text-red-500 bg-gray-100 dark:bg-gray-800 text-xs"
-									onClick={handleClearRepo}
-								>
-									<CircleX />
-									Clear selected repository
-								</Button>
-							)}
-						</div>
+								<ScrollArea className="h-[200px]">
+									<div className="space-y-1 text-black dark:text-white">
+										{filteredRepos.map((repo) => (
+											<Button
+												key={repo.id}
+												variant="ghost"
+												className="w-full justify-start font-normal"
+												onClick={() => handleSelectRepo(repo.full_name, repo.name)}
+											>
+												{repo.name}
+											</Button>
+										))}
+									</div>
+								</ScrollArea>
+								{selectedRepo && (
+									<Button
+										className="w-full text-red-500 bg-gray-100 dark:bg-gray-800 text-xs"
+										onClick={handleClearRepo}
+									>
+										<CircleX />
+										Clear selected repository
+									</Button>
+								)}
+							</div>
+						)}
 					</PopoverContent>
 				</Popover>
 				<AlertDialog open={isNoReadMeDialogOpen}>
@@ -222,42 +249,46 @@ function SelectRepos({
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent className="min-w-[140px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
-							<div className="p-2">
-								<div className="flex items-center space-x-2 mb-2">
-									<Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-									<Input
-										placeholder="Search branches..."
-										value={branchSearchQuery}
-										onChange={(e) => setBranchSearchQuery(e.target.value)}
-										className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
-									/>
-								</div>
-								<ScrollArea className="min-h-[40px]">
-									<div className="space-y-1 text-black dark:text-white">
-										{filteredBranches.map((branch, index) => (
-											<Button
-												key={index}
-												variant="ghost"
-												className="w-full justify-start font-normal"
-												onClick={() => handleSelectBranch(
-													branch.name,
-												)}
-											>
-												{branch.name}
-											</Button>
-										))}
+							{isBranchesLoading ? (
+								<PopoverLoader />
+							):(
+								<div className="p-2">
+									<div className="flex items-center space-x-2 mb-2">
+										<Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+										<Input
+											placeholder="Search branches..."
+											value={branchSearchQuery}
+											onChange={(e) => setBranchSearchQuery(e.target.value)}
+											className="h-8 flex-1 bg-transparent text-black dark:text-white border-gray-300 dark:border-neutral-700 focus-visible:ring-0"
+										/>
 									</div>
-								</ScrollArea>
-								{selectedBranch && (
-									<Button
-										className="w-full text-red-500 bg-gray-100 dark:bg-gray-800 text-xs"
-										onClick={handleClearBranch}
-									>
-										<CircleX />
-										Clear selected branch
-									</Button>
-								)}
-							</div>
+									<ScrollArea className="min-h-[40px]">
+										<div className="space-y-1 text-black dark:text-white">
+											{filteredBranches.map((branch, index) => (
+												<Button
+													key={index}
+													variant="ghost"
+													className="w-full justify-start font-normal"
+													onClick={() => handleSelectBranch(
+														branch.name,
+													)}
+												>
+													{branch.name}
+												</Button>
+											))}
+										</div>
+									</ScrollArea>
+									{selectedBranch && (
+										<Button
+											className="w-full text-red-500 bg-gray-100 dark:bg-gray-800 text-xs"
+											onClick={handleClearBranch}
+										>
+											<CircleX />
+											Clear selected branch
+										</Button>
+									)}
+								</div>
+							)}
 						</PopoverContent>
 					</Popover>
 				</div>				

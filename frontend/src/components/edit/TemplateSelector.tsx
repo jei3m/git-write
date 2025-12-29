@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserAuth } from '@/contexts/FirebaseContext';
 import { useTemplateStore } from '@/store/template.store';
 import { Button } from "@/components/ui/button";
-import { CircleX, SquarePen, PlusIcon, Search, Loader2, ChevronDown } from "lucide-react";
+import { CircleX, SquarePen, PlusIcon, Search, ChevronDown } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
 import { toast } from "sonner";
 import { TemplateSelectorProps } from '@/types/component.types';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import PopoverLoader from '../custom/PopoverLoader';
 
 function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
     const { currentUser } = UserAuth();
@@ -93,8 +94,8 @@ function TemplateSelector({setMarkdown}: TemplateSelectorProps) {
             </PopoverTrigger>
             <PopoverContent className="w-[240px] lg:w-[340px] p-0 bg-white dark:bg-gray-900 border-gray-300 dark:border-neutral-700">
                 {isLoading ? (
-                    <div className='p-2 text-center flex justify-center items-center'><Loader2 className='animate-spin text-sm text-black dark:text-white'/></div>
-                ): (
+                    <PopoverLoader />
+                ):(
                     <div className="p-2">
                         <div className="flex items-center space-x-2 mb-2">
                             <Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
