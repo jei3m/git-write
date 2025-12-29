@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserAuth } from '@/contexts/FirebaseContext';
 import { useTemplateStore } from '@/store/template.store';
 import { Button } from "@/components/ui/button";
-import { CircleX, SquarePen, PlusIcon, Search, Loader2, ChevronDown } from "lucide-react";
+import { CircleX, SquarePen, PlusIcon, Search, ChevronDown } from "lucide-react";
 import DeleteDialog from './DeleteDialog';
 import { toast } from "sonner";
 import { TemplateSelectorProps } from '@/types/component.types';
