@@ -48,7 +48,7 @@ function AuthContext({ children, requireAuth }: AuthContextProps) {
     }
 
     // If auth is required but token is invalid
-    if (requireAuth && !isTokenValid) {
+    if (requireAuth && (!currentUser || !isTokenValid)) {
         return <Navigate to="/" replace />;
     }
 
