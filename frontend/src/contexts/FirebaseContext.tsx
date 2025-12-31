@@ -34,7 +34,7 @@ function AuthProvider({ children }: {children: ReactNode}) {
 
             const user = result.user;
             setCurrentUser(user);
-            
+            window.location.reload();
             return { user, token };
         } catch (error: any) {
             console.error('Error signing in with GitHub:', error);

@@ -58,4 +58,5 @@ export interface RepoStore {
             branch: string 
         }
     ) => Promise<RepoResponse>;
+    verifyToken: () => Promise<RepoResponse>;
 }
