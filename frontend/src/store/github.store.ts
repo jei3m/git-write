@@ -4,7 +4,7 @@ import axios from "axios";
 import { getGithubToken } from "@/utils/github-token";
 import { fromBase64 } from "@/utils/base64";
 
-const githubToken = await getGithubToken();
+const githubToken = getGithubToken();
 
 export const useGithubStore = create<RepoStore>((set) => ({
     readme: "",
