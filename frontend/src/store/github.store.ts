@@ -4,7 +4,7 @@ import axios from "axios";
 import { getGithubToken } from "@/utils/github-token";
 import { fromBase64 } from "@/utils/base64";
 
-const githubToken = getGithubToken();
+const githubToken = await getGithubToken();
 
 export const useGithubStore = create<RepoStore>((set) => ({
     readme: "",
@@ -18,7 +18,11 @@ export const useGithubStore = create<RepoStore>((set) => ({
     setSelectedBranch: (branch: string) => set({selectedBranch: branch}),
     fetchRepos: async (githubUsername?: string) => {
         try {
-            const { data} = await axios.get(`https://api.github.com/users/${githubUsername}/repos`)
+            const { data} = await axios.get(`https://api.github.com/users/${githubUsername}/repos`, {
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`,
+                }
+            });
             set({repos: data});
             return {success: true, message: "Repositories fetched successfully"};
         } catch (error) {
@@ -150,5 +154,26 @@ export const useGithubStore = create<RepoStore>((set) => ({
                     : "Failed to commit README"
             };
         };
+    },
+    verifyToken: async() => {
+        try {
+            const { data } = await axios.get(`https://api.github.com/octocat`,{
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`
+                }
+            });
+            if (!data) throw Error(data);
+            return {
+                success: true,
+                message: "Authentication token verified successfully!"
+            };
+        } catch (error) {
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to verify authentication token"
+            };
+        }
     }
 }));
