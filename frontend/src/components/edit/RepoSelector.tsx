@@ -70,10 +70,15 @@ function SelectRepos({
 				readme: "",
 			});
 			setMarkdown("");
-    	fetchBranches(repoName);
-    } catch (error: unknown) {
-      if (error instanceof Error) console.error(`Error: ${error.message}`);
-      console.error("An unknown error has occured");
+    	const { success, message } = await fetchBranches(repoName);
+			if (!success) throw Error(message);
+    } catch (error) {
+      console.error(error);
+			toast.error(
+				error instanceof Error
+					? error.message
+					: "An error has occured check console"
+			);
     } finally {
       setisBranchesLoading(false);
     }
