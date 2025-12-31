@@ -22,7 +22,12 @@ export const useGithubStore = create<RepoStore>((set) => ({
             set({repos: data});
             return {success: true, message: "Repositories fetched successfully"};
         } catch (error) {
-            return {success: false, message: "Failed to fetch templates"};
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to fetch templates"
+            };
         }
     },
     fetchBranches: async (full_name: string) => {
@@ -37,7 +42,12 @@ export const useGithubStore = create<RepoStore>((set) => ({
             return {success: true, message: "Branches fetched successfully", branches: data};
         } catch (error) {
             console.error("Error fetching branches:", error);
-            return {success: false, message: "Failed to fetch branches"};
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to fetch branches"
+            };
         }
     },
     fetchReadme: async (full_name: string, branch?: string) => {
@@ -53,7 +63,12 @@ export const useGithubStore = create<RepoStore>((set) => ({
 
             return {success: true, message: "Readme fetched successfully"};
         } catch (error) {
-            return {success: false, message: "Failed to fetch templates"};
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to fetch README"
+            };
         }
     },
     fetchUserData: async (githubUID: string) => {
@@ -63,7 +78,12 @@ export const useGithubStore = create<RepoStore>((set) => ({
             set({gitUser: data});
             return {success: true, message: "User data fetched successfully"};
         } catch (error) {
-            return {success: false, message: "Failed to fetch user data"};
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to fetch user data"
+            };
         }
     },
     fetchSHA: async (full_name: string, branch: string) => {
@@ -76,7 +96,12 @@ export const useGithubStore = create<RepoStore>((set) => ({
             set({sha: data.sha});
             return {success: true, message: "SHA fetched successfully"};
         } catch (error) {
-            return {success: false, message: "Failed to fetch SHA"};
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to fetch SHA"
+            };
         }
     },
     postCommit: async (updateREADME: { 
@@ -117,9 +142,13 @@ export const useGithubStore = create<RepoStore>((set) => ({
             if (!data) throw new Error("Failed to update README");
             return {success: true, message: "README updated successfully!"};
 
-        } catch (error: unknown) {
-            if (error instanceof Error) return {success: false, message: error.message};
-            return {success: false, message: "Error in updating README"};
+        } catch (error) {
+            return {
+                success: false, 
+                message: error instanceof Error
+                    ? error.message 
+                    : "Failed to commit README"
+            };
         };
     }
 }));
